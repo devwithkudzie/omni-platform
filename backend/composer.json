@@ -1,0 +1,14 @@
+{
+  "name": "omnicontact/backend",
+  "description": "OmniContact PHP API for the platform migration workspace.",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "OmniContact\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=8.1"
+  }
+}
+

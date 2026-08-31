@@ -1,0 +1,3 @@
+RewriteEngine On
+
+RewriteRule ^api/v1(?:/.*)?$ public/index.php [L,QSA]

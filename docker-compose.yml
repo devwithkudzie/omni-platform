@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: omnicontact_website
+      DB_USER: omnicontact
+      DB_PASS: omnicontact
+      APP_URL: http://127.0.0.1:8080
+      JWT_SECRET: local-dev-omnicontact-cms-secret
+      ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001,http://localhost:3002,http://127.0.0.1:3002,http://localhost:3003,http://127.0.0.1:3003,http://localhost:3004,http://127.0.0.1:3004,http://localhost:3005,http://127.0.0.1:3005,http://localhost:3006,http://127.0.0.1:3006
+      SERVICE_ACCOUNT: ${SERVICE_ACCOUNT:-}
+      TENANT_ID: ${TENANT_ID:-}
+      CLIENT_ID: ${CLIENT_ID:-}
+      CLIENT_SECRET: ${CLIENT_SECRET:-}
+      CONTACT_TO_ZW: ${CONTACT_TO_ZW:-}
+      CONTACT_TO_ZA: ${CONTACT_TO_ZA:-}
+      CONTACT_CC: ${CONTACT_CC:-}
+    volumes:
+      - ./backend/cms/uploads:/var/www/html/cms/uploads
+      - ./backend/cms/content:/var/www/html/cms/content
+      - ./backend/public/uploads:/var/www/html/public/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: omnicontact_website
+      MYSQL_USER: omnicontact
+      MYSQL_PASSWORD: omnicontact
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/cms/migrations/create_tables.sql:/docker-entrypoint-initdb.d/01-create-tables.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql-data:

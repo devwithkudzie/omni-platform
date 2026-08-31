@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
+  <title id="title">Project Ignite Badge</title>
+  <desc id="desc">A badge for Project Ignite digital leadership.</desc>
+  <rect width="320" height="240" fill="#091f45"/>
+  <path fill="#ffc425" d="M0 0h320v18H0zM0 222h320v18H0z"/>
+  <circle cx="160" cy="113" r="58" fill="#fff"/>
+  <path fill="#ffc425" d="M160 43c14 24 38 38 38 69 0 22-17 40-38 40s-38-18-38-40c0-31 24-45 38-69Z"/>
+  <path fill="#091f45" d="M160 84c6 11 18 18 18 32 0 11-8 20-18 20s-18-9-18-20c0-14 12-21 18-32Z"/>
+  <path fill="#fff" d="M139 166h42v12h-42zM128 184h64v10h-64z"/>
+  <text x="160" y="32" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="900" text-anchor="middle">PROJECT IGNITE</text>
+  <text x="160" y="213" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="900" letter-spacing="1" text-anchor="middle">DIGITAL LEADERSHIP</text>
+</svg>

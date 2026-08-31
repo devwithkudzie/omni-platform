@@ -1,0 +1,20 @@
+node_modules/
+.next/
+dist/
+vendor/
+.env
+.env.local
+storage/logs/*.log
+.DS_Store
+
+# Next static export (generated)
+frontend/out/
+
+# Deploy archives and local dumps (over GitHub's 100MB limit)
+*.zip
+omnicontact-public_html-cpanel-*.zip
+omnicontact_website.sql
+local-db-backup-before-deployed-import.sql
+
+# Source PNGs with JPEG equivalents already in use
+frontend/public/landing_pages/*.png

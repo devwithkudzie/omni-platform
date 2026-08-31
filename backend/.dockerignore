@@ -1,0 +1,7 @@
+.git
+error_log
+cms/error_log
+cms/composer.phar
+cms/social/*.xlsx
+cms/social/*.json
+cms/config.local.php
