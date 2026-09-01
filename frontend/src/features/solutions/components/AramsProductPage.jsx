@@ -79,7 +79,6 @@ export default function AramsProductPage({ page }) {
 
       <section className="solution-anchor solution-group solution-group--dark" id="outcomes">
         <div className="site-container">
-          <p className="solution-group__eyebrow">Outcomes</p>
           <SolutionOutcomes
             heading="Outcomes we support"
             image={page.secondaryImage || page.image}

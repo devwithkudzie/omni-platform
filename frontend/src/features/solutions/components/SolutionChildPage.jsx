@@ -66,7 +66,6 @@ export default function SolutionChildPage({
 
       <section className="solution-anchor solution-group solution-group--dark" id="outcomes">
         <div className="site-container">
-          <p className="solution-group__eyebrow">Outcomes</p>
           <SolutionOutcomes image={page.secondaryImage || page.image} items={page.outcomes} stats={page.stats} />
         </div>
         <SolutionRelated

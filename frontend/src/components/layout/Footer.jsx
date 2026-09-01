@@ -25,6 +25,7 @@ const footerColumns = [
     title: 'Company',
     links: [
       ['Insights', '/insights'],
+      ['Site Tour', '/site-tour'],
       ['Project Ignite', '/about/project-ignite'],
       ['Careers', '/about/careers'],
       ['Contact', '/contact'],
@@ -36,9 +37,9 @@ const footerColumns = [
 
 export default function Footer() {
   return (
-    <>
-      <footer className="site-footer">
-        <div className="site-container site-footer__grid">
+    <footer className="site-footer">
+      <div className="site-container">
+        <div className="site-footer__grid">
           <section className="site-footer__brand" aria-label="OmniContact">
             <img src="/logo.png" alt="OmniContact" width="150" height="58" />
             <p>BPO, AI, digital support, and customer operations for teams that need reliable delivery at scale.</p>
@@ -70,13 +71,13 @@ export default function Footer() {
               </section>
             ))}
           </nav>
-
         </div>
-        <div className="site-container site-footer__bottom">
+
+        <div className="site-footer__bottom">
           <span>&copy; {new Date().getFullYear()} OmniContact BPO Services. All rights reserved.</span>
           <Link href="/privacy-policy">Privacy</Link>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   )
 }

@@ -36,9 +36,11 @@ export function SolutionTrust({ quote }) {
 
       <div className="solution-trust__logos">
         <p>Trusted delivery</p>
-        <div>
+        <div className="solution-trust__track">
           {partnerLogos.map((logo) => (
-            <img alt={logo.title} key={logo.title} src={logo.image} />
+            <div className="solution-trust__logo" key={logo.title}>
+              <img alt={logo.title} src={logo.image} />
+            </div>
           ))}
         </div>
       </div>

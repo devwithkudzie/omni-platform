@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import AssessmentModalButton from '@/components/assessment/AssessmentModalButton'
+import SectionHead from '@/components/layout/SectionHead'
 
 const howCardColors = ['#2c328c', '#ed0000', '#0039A6', '#AA0050']
 const howCardImages = [
@@ -57,19 +58,9 @@ export function SolutionEngagement({
   return (
     <section className="bg-[#171b31] py-[clamp(56px,7vw,96px)] text-white">
       <div className="site-container">
-        <div className="max-w-[36rem]">
-          {eyebrow ? (
-            <p className="mb-3 font-medium uppercase tracking-[.08em] text-omni-yellow">{eyebrow}</p>
-          ) : null}
-          <h2 className="m-0 text-[clamp(1.7rem,2.2vw,2.6rem)] font-semibold leading-[1.16] text-white">
-            {heading}
-          </h2>
-          {copy ? (
-            <p className="mt-3 max-w-[38rem] text-[1rem] font-normal leading-[1.7] text-white/70">
-              {copy}
-            </p>
-          ) : null}
-        </div>
+        <SectionHead className="section-head--on-dark" copy={copy} eyebrow={eyebrow}>
+          {heading}
+        </SectionHead>
         <div className="how-cards" ref={listRef}>
           {items.map(([title, detail], index) => (
             <article
@@ -101,6 +92,7 @@ export function SolutionRelated({
   eyebrow = 'Related services',
   heading = 'Other ways teams work with us',
   cardLabel = 'Related service',
+  linkLabel = 'View service →',
 }) {
   const listRef = useRevealOnScroll()
 
@@ -109,12 +101,9 @@ export function SolutionRelated({
   return (
     <section className="bg-[#111425] py-[clamp(40px,5vw,64px)] text-white">
       <div className="site-container">
-        <div className="max-w-[36rem]">
-          <p className="mb-3 font-medium uppercase tracking-[.08em] text-omni-yellow">{eyebrow}</p>
-          <h2 className="m-0 text-[clamp(1.55rem,1.8vw,2.2rem)] font-semibold leading-[1.18] text-white">
-            {heading}
-          </h2>
-        </div>
+        <SectionHead className="section-head--on-dark" eyebrow={eyebrow}>
+          {heading}
+        </SectionHead>
         <div
           className="related-cards"
           ref={listRef}
@@ -136,7 +125,7 @@ export function SolutionRelated({
                     <p>{cardLabel}</p>
                     <h3>{item.title}</h3>
                   </div>
-                  <span className="related-card__link">View service →</span>
+                  <span className="related-card__link">{linkLabel}</span>
                 </div>
               </Link>
             ))}
@@ -150,11 +139,10 @@ export function SolutionClosingCta({ page }) {
   return (
     <section className="solution-anchor bg-[#171b31] py-[clamp(40px,5vw,64px)] text-white" id="start">
       <div className="site-container grid items-center gap-8 lg:grid-cols-[1.15fr_.85fr]">
-        <div className="max-w-[36rem]">
-          <h2 className="m-0 text-[clamp(1.55rem,1.8vw,2.2rem)] font-semibold leading-[1.18] text-white">
+        <div>
+          <SectionHead className="section-head--on-dark" copy={page.cta.text} eyebrow="Next step">
             {page.cta.heading}
-          </h2>
-          <p className="mt-4 max-w-[38rem] font-normal leading-[1.7] text-white/80">{page.cta.text}</p>
+          </SectionHead>
         </div>
         <div className="rounded-[10px] bg-white p-6 text-[#101728] shadow-[0_20px_50px_rgba(0,0,0,.18)]">
           <h3 className="m-0 text-xl font-semibold">Start with a 30-minute discovery session</h3>

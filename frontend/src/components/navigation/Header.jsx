@@ -99,7 +99,7 @@ export default function Header() {
     <header className="desktop-header" onMouseLeave={scheduleCloseMenu}>
       <div className="site-container desktop-header__bar">
         <Link className="desktop-header__logo" href="/" aria-label="OmniContact home">
-          <img src="/logo.png" alt="OmniContact" width="126" height="49" />
+          <img src="/logo.png" alt="OmniContact" width="144" height="56" />
         </Link>
 
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -123,7 +123,7 @@ export default function Header() {
           })}
         </nav>
 
-        <button className="desktop-header__cta" type="button" onClick={openAssessment}>Book discovery</button>
+        <button className="desktop-header__cta" type="button" onClick={openAssessment}>Book a discovery call</button>
       </div>
 
       {openGroup ? (

@@ -31,7 +31,7 @@ export default async function InsightArticleRoute({ params }) {
   if (!post) notFound()
 
   return (
-    <SiteShell>
+    <SiteShell chrome="static">
       <main>
         <InsightArticle post={post} />
       </main>

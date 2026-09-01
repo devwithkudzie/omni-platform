@@ -3,6 +3,23 @@ const sharedCta = {
   secondaryCta: { label: 'Contact Us', href: '/contact' },
 }
 
+const aboutAssessment = {
+  category: 'OmniContact',
+  title: 'Discovery Session',
+  cta: 'Start assessment',
+  objective: 'Continue the conversation',
+}
+
+export const facilityTour = {
+  eyebrow: 'Our floor',
+  heading: 'Walk our delivery floor',
+  body: 'Explore the OmniContact operations environment in 360°. Move through the space the way a visitor would.',
+  poster: '/home/contact-center.jpg',
+  startLabel: 'Start the tour',
+  title: 'OmniContact operations floor, 360° tour',
+  src: 'https://omnicontact.viewin360.co/share/collection/7My2Q?logo=-1&info=0&fs=1&vr=1&sd=1&initload=0&autorotate=-0.32&autop=10&autopalt=1&thumbs=-1&inst=0',
+}
+
 export const aboutPages = {
   about: {
     title: 'About OmniContact',
@@ -25,6 +42,7 @@ export const aboutPages = {
       ['What We Do', 'We support customer care, back-office administration, AI-enabled services, assessment delivery, and professional operations across multiple industries.'],
       ['How We Work', 'Our work combines people, process, technology, quality assurance, and performance reporting so clients can scale without losing visibility.'],
     ],
+    detailHeading: 'How we work',
     cta: {
       heading: 'Build a stronger customer operations model',
       text: 'Talk to us about the service, support, or operational workflows your team needs to improve.',
@@ -52,6 +70,8 @@ export const aboutPages = {
       ['Our Positioning', 'We operate at the intersection of customer experience, business process outsourcing, AI enablement, and professional services.'],
       ['Our Promise', 'We aim to deliver fast, reliable, and measurable service while helping clients reduce operational pressure.'],
     ],
+    detailHeading: 'How we show up',
+    tour: facilityTour,
     cta: {
       heading: 'Learn how OmniContact can support your team',
       text: 'Share your priorities and we will help map the best service path.',
@@ -81,6 +101,7 @@ export const aboutPages = {
       ['Excellence', 'We are driven by a passion for quality, consistency, accountability, and improvement in every interaction.'],
       ['Inclusivity', 'We create opportunities for high-potential talent and build delivery models that can generate both business and social value.'],
     ],
+    detailHeading: 'Values in action',
     cta: {
       heading: 'Work with a team guided by clear values',
       text: 'Talk to OmniContact about building a customer operations model that reflects your goals and service standards.',
@@ -108,6 +129,7 @@ export const aboutPages = {
       ['Why We Visit', 'A simple visit can bring companionship, warmth, and emotional support to people who need care, encouragement, and connection.'],
       ['SDG Alignment', 'Our community work supports good health and well-being, quality education, reduced inequalities, sustainable communities, and partnerships for the goals.'],
     ],
+    detailHeading: 'How we show up',
     cta: {
       heading: 'Partner with us on meaningful community work',
       text: 'Connect with OmniContact to discuss community partnerships, skills access, and practical support initiatives.',
@@ -135,6 +157,7 @@ export const aboutPages = {
       ['How to Apply', 'Current openings and hiring workflows are managed through the OmniContact careers portal.'],
       ['Culture', 'We value innovation, agility, excellence, empathy, accountability, and continuous improvement.'],
     ],
+    detailHeading: 'Life at OmniContact',
     cta: {
       heading: 'Explore open roles',
       text: 'Visit the careers portal to see available opportunities and application steps.',
@@ -163,6 +186,7 @@ export const aboutPages = {
       ['What It Means', 'Impact sourcing is employment for high-potential but disadvantaged people in the services sector.'],
       ['Our Initiative', 'We give talented people support, resources, and opportunity to realize their full potential through structured work and development.'],
     ],
+    detailHeading: 'How it works',
     cta: {
       heading: 'Build impact into your operating model',
       text: 'Talk to us about combining reliable delivery with inclusive workforce development.',
@@ -204,5 +228,13 @@ export const aboutPages = {
 export const aboutSlugs = Object.keys(aboutPages).filter((slug) => slug !== 'about')
 
 export function getAboutPage(slug = 'about') {
-  return aboutPages[slug] || null
+  const page = aboutPages[slug]
+  if (!page) return null
+
+  return {
+    ...page,
+    assessmentContext: page.assessmentContext || aboutAssessment,
+    assessmentGoal: page.assessmentGoal || 'Continue the conversation',
+    navCta: page.navCta || 'Book a discovery call',
+  }
 }

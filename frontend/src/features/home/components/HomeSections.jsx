@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import AssessmentModalButton from '@/components/assessment/AssessmentModalButton'
+import SectionHead from '@/components/layout/SectionHead'
+import HomeDiscoveryCallout from './HomeDiscoveryCallout'
 import OpportunityStory from './OpportunityStory'
 import IndustriesSection from './IndustriesSection'
 import Marquee from 'react-fast-marquee'
@@ -136,7 +138,7 @@ function LatestInsights({ blogs, error }) {
         <div className="reference-section__head reference-section__head--split">
           <div>
             <SectionEyebrow>Insights</SectionEyebrow>
-            <h2>Operational thinking.</h2>
+            <h2>Blogs & Insights</h2>
           </div>
           <Link className="reference-section__more" href="/insights">
             All insights <span aria-hidden="true">→</span>
@@ -199,14 +201,14 @@ function TrustBadge({ badge }) {
 
 function TrustSection() {
   return (
-    <section className="home-light-section bg-[#f6f8fc] py-[clamp(34px,4vw,56px)]">
+    <section className="home-light-section bg-[#f6f8fc] py-[clamp(48px,6vw,80px)]">
       <div className="site-container">
-        <div className="mb-10 max-w-[760px]">
-          <p className="mb-2 font-medium uppercase tracking-[.08em] text-grey">Trusted Delivery</p>
-          <h2 className="m-0 text-[clamp(1.35rem,1vw+1rem,2rem)] font-semibold leading-[1.18] text-omni-dark-grey">
-            Certifications, security commitments, and impact partnerships behind our operations.
-          </h2>
-        </div>
+        <SectionHead
+          copy="Certifications, security commitments, and impact partnerships behind our operations."
+          eyebrow="Trusted Delivery"
+        >
+          Trust & Impact
+        </SectionHead>
       </div>
 
       <div className="trust-marquee">
@@ -223,23 +225,28 @@ function TrustSection() {
 function FinalCta() {
   return (
     <section className="reference-final-cta">
-      <div className="site-container">
-        <h2><span aria-hidden="true">&gt;</span> Ready to improve service quality while controlling cost?</h2>
-        <div className="reference-final-cta__actions">
-          <AssessmentModalButton
-            className="reference-button reference-button--primary"
-            step="meeting"
-            context={{
-              category: 'OmniContact',
-              title: 'Discovery Session',
-              objective: 'Map the right OmniContact solution',
-            }}
-          >
-            Book discovery call <span aria-hidden="true">→</span>
-          </AssessmentModalButton>
-          <Link className="reference-button reference-button--ghost" href="/contact">
-            Contact sales <span aria-hidden="true">→</span>
-          </Link>
+      <div className="site-container reference-final-cta__inner">
+        <span className="reference-final-cta__mark" aria-hidden="true">
+          &gt;
+        </span>
+        <div className="reference-final-cta__body">
+          <h2>Ready to improve service quality while controlling cost?</h2>
+          <div className="reference-final-cta__actions">
+            <AssessmentModalButton
+              className="reference-button reference-button--primary"
+              step="meeting"
+              context={{
+                category: 'OmniContact',
+                title: 'Discovery Session',
+                objective: 'Map the right OmniContact solution',
+              }}
+            >
+              Book discovery call <span aria-hidden="true">→</span>
+            </AssessmentModalButton>
+            <Link className="reference-button reference-button--ghost" href="/contact">
+              Contact sales <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
@@ -252,6 +259,7 @@ export default async function HomeSections() {
   return (
     <>
       <TrustSection />
+      <HomeDiscoveryCallout />
       <OpportunityStory />
       <IndustriesSection />
       <LatestInsights blogs={blogs} error={error} />

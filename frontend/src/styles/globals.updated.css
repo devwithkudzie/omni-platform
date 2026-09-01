@@ -553,7 +553,7 @@ body.project-ignite-nav-docked .site-chrome {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  background: #081126 url("/omni-hero.jpg") center / cover no-repeat;
+  background: #081126;
 }
 
 .home-hero::before {

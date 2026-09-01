@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import SectionHead from '@/components/layout/SectionHead'
 
 const tourTabs = [
   {
@@ -77,11 +78,13 @@ export default function AramsPlatformTour() {
     <section className="product-tour">
       <div className="site-container">
         <div className="product-tour__intro">
-          <p>Platform</p>
-          <h2>Explore how ARAMS works</h2>
-          <p>
-            Switch between the views school teams actually use — administration, records, fees, and parent communication.
-          </p>
+          <SectionHead
+            className="section-head--on-dark"
+            copy="Switch between the views school teams actually use — administration, records, fees, and parent communication."
+            eyebrow="Platform"
+          >
+            Explore how ARAMS works
+          </SectionHead>
         </div>
         <div className="product-tour__layout">
           <div className="product-tour__tabs">

@@ -14,9 +14,9 @@ export default function AboutRoute() {
   if (!page) notFound()
 
   return (
-    <SiteShell>
+    <SiteShell chrome="static">
       <main>
-        <AboutPage page={page} />
+        <AboutPage page={page} slug="about" />
       </main>
     </SiteShell>
   )

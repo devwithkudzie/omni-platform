@@ -1,7 +1,6 @@
 import Footer from './Footer'
 import DiscoveryModalProvider from './DiscoveryModalProvider'
 import AssessmentModalProvider from './AssessmentModalProvider'
-import TopBar from './TopBar'
 import Header from '@/components/navigation/Header'
 import MobileNav from '@/components/navigation/MobileNav'
 
@@ -9,7 +8,6 @@ export default function SiteShell({ children, chrome }) {
   return (
     <>
       <div className={chrome === 'static' ? 'site-chrome site-chrome--static' : 'site-chrome'}>
-        <TopBar />
         <Header />
         <MobileNav />
       </div>

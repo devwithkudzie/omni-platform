@@ -146,11 +146,11 @@ export const navMenu = [
       { label: 'Financial Services & Banking', desc: 'KYC, collections, servicing, and disputes.', href: '/industries/financial-services', icon: industryIcons['financial-services'] },
       { label: 'Insurance', desc: 'Claims, underwriting support, renewals, and care.', href: '/industries/insurance', icon: industryIcons.insurance },
       { label: 'Healthcare', desc: 'Member services, scheduling, eligibility, and navigation.', href: '/industries/health', icon: industryIcons.health },
-      { label: 'Telecommunications', desc: 'Tiered support, retention, onboarding, and operations.', href: '/industries/technology' },
-      { label: 'Technology & SaaS', desc: 'Product support, onboarding, and technical success.', href: '/industries/technology' },
-      { label: 'Retail & E-commerce', desc: 'Orders, returns, loyalty, and marketplace operations.', href: '/industries/retail-ecommerce' },
+      { label: 'Telecommunications', desc: 'Tiered support, retention, onboarding, and operations.', href: '/industries/technology', icon: industryIcons.technology },
+      { label: 'Technology & SaaS', desc: 'Product support, onboarding, and technical success.', href: '/industries/technology', icon: industryIcons.technology },
+      { label: 'Retail & E-commerce', desc: 'Orders, returns, loyalty, and marketplace operations.', href: '/industries/retail-ecommerce', icon: industryIcons['retail-ecommerce'] },
       { label: 'Travel & Hospitality', desc: 'Reservations, disruption recovery, and loyalty.', href: '/industries/travel-hospitality', icon: industryIcons['travel-hospitality'] },
-      { label: 'Education', desc: 'Admissions, learner support, enrolment, and operations.', href: '/industries/education' },
+      { label: 'Education', desc: 'Admissions, learner support, enrolment, and operations.', href: '/industries/education', icon: industryIcons.education },
     ],
   },
   {
@@ -163,6 +163,7 @@ export const navMenu = [
         href: '/about',
         children: [
           { label: 'Who We Are', desc: 'Our story, positioning, leadership, and footprint.', href: '/about/who-we-are' },
+          { label: 'Site Tour', desc: 'Walk our operations floor in 360° before you visit.', href: '/site-tour' },
           { label: 'Vision, Mission & Values', desc: 'The principles behind how OmniContact works.', href: '/about/vision-mission-values' },
           { label: 'Community Impact', desc: 'Community partnerships and measurable social value.', href: '/about/community-impact' },
           { label: 'Project Ignite', desc: 'Digital leadership opportunities for women and girls.', href: '/about/project-ignite' },

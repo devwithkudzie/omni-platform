@@ -1,8 +1,11 @@
+import SectionHead from '@/components/layout/SectionHead'
+
 export default function SolutionOutcomes({
   items = [],
   stats = [],
   image,
   heading = 'Outcomes we support',
+  eyebrow = 'Outcomes',
 }) {
   if (!items.length) return null
 
@@ -15,7 +18,9 @@ export default function SolutionOutcomes({
 
   return (
     <div className="outcome-board">
-      {heading ? <h2 className="outcome-board__heading">{heading}</h2> : null}
+      <SectionHead className="section-head--on-dark" eyebrow={eyebrow}>
+        {heading}
+      </SectionHead>
 
       {featured ? (
         <article className="outcome-feature">

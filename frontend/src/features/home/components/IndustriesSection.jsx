@@ -55,7 +55,7 @@ export default function IndustriesSection() {
       <div className="site-container">
         <div className="reference-section__head">
           <SectionEyebrow>Where we work</SectionEyebrow>
-          <h2>Industry-aware operations built for measurable service.</h2>
+          <h2>Industries Served</h2>
         </div>
         <div className="reference-industries" aria-label="Industries" ref={listRef}>
           {industries.map((industry, index) => (

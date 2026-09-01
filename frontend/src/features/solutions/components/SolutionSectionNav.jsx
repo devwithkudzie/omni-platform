@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AssessmentModalButton from '@/components/assessment/AssessmentModalButton'
 
 const defaultLinks = [
@@ -18,7 +18,9 @@ export default function SolutionSectionNav({
   links = defaultLinks,
   ctaLabel = 'Book a discovery call',
 }) {
+  const sentinelRef = useRef(null)
   const [active, setActive] = useState(links[0]?.href || '#overview')
+  const [stuck, setStuck] = useState(false)
 
   useEffect(() => {
     const ids = links.map((link) => link.href.slice(1))
@@ -47,32 +49,48 @@ export default function SolutionSectionNav({
     }
   }, [links])
 
-  return (
-    <nav aria-label="On this page" className="solution-section-nav">
-      <div className="site-container solution-section-nav__inner">
-        {title ? <p className="solution-section-nav__title">{title}</p> : null}
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel || !('IntersectionObserver' in window)) return undefined
 
-        <div className="solution-section-nav__links">
-          {links.map((link) => (
-            <a
-              className={`solution-section-nav__link${active === link.href ? ' is-active' : ''}`}
-              href={link.href}
-              key={link.href}
-              onClick={() => setActive(link.href)}
+    const observer = new IntersectionObserver(
+      ([entry]) => setStuck(!entry.isIntersecting),
+      { threshold: 0 },
+    )
+
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <>
+      <div aria-hidden="true" className="solution-section-nav__sentinel" ref={sentinelRef} />
+      <nav aria-label="On this page" className={`solution-section-nav${stuck ? ' is-stuck' : ''}`}>
+        <div className="site-container solution-section-nav__inner">
+          {title ? <p className="solution-section-nav__title">{title}</p> : null}
+
+          <div className="solution-section-nav__links">
+            {links.map((link) => (
+              <a
+                className={`solution-section-nav__link${active === link.href ? ' is-active' : ''}`}
+                href={link.href}
+                key={link.href}
+                onClick={() => setActive(link.href)}
+              >
+                {link.label}
+              </a>
+            ))}
+            <AssessmentModalButton
+              className="solution-section-nav__cta"
+              context={assessmentContext}
+              goal={assessmentGoal}
+              step="meeting"
             >
-              {link.label}
-            </a>
-          ))}
-          <AssessmentModalButton
-            className="solution-section-nav__cta"
-            context={assessmentContext}
-            goal={assessmentGoal}
-            step="meeting"
-          >
-            {ctaLabel}
-          </AssessmentModalButton>
+              {ctaLabel}
+            </AssessmentModalButton>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   )
 }

@@ -10,6 +10,7 @@ const industryPagesRaw = {
     title: 'Education Services',
     subtitle: 'Secure delivery for modern assessments and learner journeys.',
     image: '/home/industries/education.jpg',
+    icon: industryIcons.education,
     seoDescription:
       'Secure online assessment operations, learner support, and digital academic services for schools, universities, and certification bodies.',
     intro: {
@@ -197,6 +198,7 @@ const industryPagesRaw = {
     title: 'Technology, Digital and Advertising',
     subtitle: 'Execution muscle for fast-moving digital businesses.',
     image: '/home/industries/digital.jpg',
+    icon: industryIcons.technology,
     seoDescription:
       'Technology and digital operations support including customer management, AI operations, data services, digital marketing support, and software delivery assistance.',
     intro: {
@@ -243,6 +245,7 @@ const industryPagesRaw = {
     title: 'Retail and E-commerce',
     subtitle: 'Responsive customer operations for orders, returns, loyalty, and digital commerce growth.',
     image: '/home/contact-center.jpg',
+    icon: industryIcons['retail-ecommerce'],
     seoDescription:
       'Retail and e-commerce support services for customer care, order management, returns, marketplace operations, loyalty programs, and customer experience analytics.',
     intro: {

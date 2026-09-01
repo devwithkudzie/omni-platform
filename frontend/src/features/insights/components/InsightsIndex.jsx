@@ -2,7 +2,24 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import SectionHead from '@/components/layout/SectionHead'
+import SolutionHero from '@/features/solutions/components/SolutionHero'
+import { SolutionClosingCta } from '@/features/solutions/components/SolutionSections'
 import { getInsights } from '@/features/insights/services/insightsApi'
+
+const insightsCta = {
+  assessmentContext: {
+    category: 'OmniContact',
+    title: 'Discovery Session',
+    cta: 'Start assessment',
+    objective: 'Continue the conversation',
+  },
+  assessmentGoal: 'Continue the conversation',
+  cta: {
+    heading: 'Talk with the team behind these insights',
+    text: 'If an article maps to a live operations problem, we can walk through channels, SLAs, and delivery options in a 30-minute session.',
+  },
+}
 
 function formatDate(value) {
   if (!value) return 'OmniContact'
@@ -41,63 +58,50 @@ export default function InsightsIndex({ posts: initialPosts = [], error: initial
 
   return (
     <>
-      <section className="bg-omni-blue text-white">
-        <div className="site-container grid min-h-[clamp(380px,48vh,560px)] items-center py-[clamp(56px,8vw,100px)]">
-          <div className="max-w-[820px]">
-            <p className="mb-3 font-black uppercase tracking-[.08em] text-omni-yellow">Insights</p>
-            <h1 className="m-0 text-[clamp(2.35rem,4.7vw,5.4rem)] font-black leading-[1.03] text-white">
-              Insights
-            </h1>
-            <p className="mt-5 max-w-[720px] border-l-[3px] border-white/90 pl-4 text-[clamp(1rem,.45vw+1rem,1.32rem)] leading-[1.6] text-white/90">
-              Articles, updates, and expert views from OmniContact.
-            </p>
-          </div>
-        </div>
-      </section>
+      <SolutionHero
+        breadcrumbs={[{ label: 'Insights' }]}
+        image="/home/associates.jpg"
+        subtitle="Articles, updates, and expert views from OmniContact on customer operations, AI, and delivery."
+        title="Insights"
+      />
 
-      <section className="bg-omni-soft py-[clamp(54px,7vw,92px)]">
+      <section className="solution-anchor solution-group solution-group--navy" id="articles">
         <div className="site-container">
+          <SectionHead className="section-head--on-dark" eyebrow="Latest thinking">
+            Operational writing from the floor
+          </SectionHead>
+
           {loading && (
-            <p className="rounded-lg bg-white p-5 text-center font-bold text-[#526179] shadow-[0_10px_24px_rgba(25,49,118,.08)]">
-              Loading insights...
-            </p>
+            <p className="insight-status">Loading insights...</p>
           )}
 
           {!loading && error && (
-            <p className="rounded-lg bg-white p-5 text-center font-bold text-[#b42318] shadow-[0_10px_24px_rgba(25,49,118,.08)]">
-              Unable to load insights right now.
-            </p>
+            <p className="insight-status insight-status--error">Unable to load insights right now.</p>
           )}
 
           {!loading && !error && posts.length === 0 && (
-            <p className="rounded-lg bg-white p-5 text-center text-[#526179] shadow-[0_10px_24px_rgba(25,49,118,.08)]">
-              No insights have been published yet. Check back soon.
-            </p>
+            <p className="insight-status">No insights have been published yet. Check back soon.</p>
           )}
 
           {!loading && !error && posts.length > 0 && (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="reference-insights">
               {posts.map((post) => (
-                <Link className="group block min-w-0" href={`/insights/${post.slug}`} key={post.id || post.slug}>
-                  <article className="h-full overflow-hidden rounded-lg bg-white shadow-[0_12px_30px_rgba(25,49,118,.1)] transition duration-200 group-hover:-translate-y-1 group-hover:shadow-[0_18px_36px_rgba(25,49,118,.16)]">
-                    {post.feature_image && (
-                      <img className="h-[220px] w-full object-cover" src={post.feature_image} alt={post.title} />
-                    )}
-                    <div className="grid gap-3 p-5">
-                      <span className="w-fit rounded-full bg-[#4176b9]/15 px-3 py-1 text-xs font-black uppercase tracking-[.04em] text-omni-blue">
-                        Highlights
-                      </span>
-                      <h2 className="m-0 text-xl font-black leading-[1.25] text-omni-ink">{post.title}</h2>
-                      {post.excerpt && <p className="m-0 line-clamp-3 leading-[1.65] text-[#526179]">{post.excerpt}</p>}
-                      <small className="font-bold text-[#526179]">{formatDate(post.created_at || post.scheduled_publish_at)}</small>
-                    </div>
-                  </article>
+                <Link className="reference-insight-card" href={`/insights/${post.slug}`} key={post.id || post.slug}>
+                  <img alt="" src={post.feature_image || '/home/associates.jpg'} />
+                  <div className="reference-insight-card__meta">
+                    <span>Insight</span>
+                    <span>{formatDate(post.created_at || post.scheduled_publish_at)}</span>
+                  </div>
+                  <h3>{post.title}</h3>
+                  {post.excerpt ? <p>{post.excerpt}</p> : null}
                 </Link>
               ))}
             </div>
           )}
         </div>
       </section>
+
+      <SolutionClosingCta page={insightsCta} />
     </>
   )
 }

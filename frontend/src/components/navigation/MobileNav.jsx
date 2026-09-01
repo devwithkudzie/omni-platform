@@ -58,7 +58,7 @@ export default function MobileNav() {
     <header className="mobile-header">
       <div className="mobile-header__bar">
         <Link href="/" aria-label="OmniContact home" onClick={closeNav}>
-          <img src="/logo.png" alt="OmniContact" width="118" height="45" />
+          <img src="/logo.png" alt="OmniContact" width="92" height="36" />
         </Link>
         <button
           type="button"
@@ -77,7 +77,7 @@ export default function MobileNav() {
 
       <aside className={`mobile-drawer${navOpen ? ' is-open' : ''}`} aria-hidden={!navOpen}>
         <div className="mobile-drawer__head">
-          <img src="/logo.png" alt="OmniContact" width="118" height="45" />
+          <img src="/logo.png" alt="OmniContact" width="92" height="36" />
           <button type="button" className="mobile-drawer__close" onClick={closeNav} aria-label="Close menu">
             <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
               <path d="M6 6l12 12M18 6 6 18" />
@@ -128,7 +128,7 @@ export default function MobileNav() {
             )
           })}
 
-          <button className="mobile-drawer__cta" type="button" onClick={openAssessment}>Book discovery</button>
+          <button className="mobile-drawer__cta" type="button" onClick={openAssessment}>Book a discovery call</button>
         </nav>
       </aside>
     </header>

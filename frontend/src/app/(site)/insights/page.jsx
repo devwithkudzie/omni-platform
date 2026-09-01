@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function InsightsRoute() {
   return (
-    <SiteShell>
+    <SiteShell chrome="static">
       <main>
         <InsightsIndex />
       </main>

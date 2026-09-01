@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 const outcomes = [
   {
@@ -10,7 +10,7 @@ const outcomes = [
     headline: 'Turn more customer interactions into growth.',
     text:
       'Strengthen acquisition, conversion and retention by improving how your business attracts, serves and understands customers.',
-    image: '/home/industries/digital.jpg',
+    images: ['/home/industries/digital.jpg'],
     links: [
       ['Reach and support more customers across every channel', '/solutions/customer-experience-solutions/omnichannel-engagement'],
       ['Turn customer interactions into stronger loyalty', '/solutions/customer-experience-solutions'],
@@ -23,7 +23,7 @@ const outcomes = [
     headline: 'Make your operations work smarter.',
     text:
       'Remove bottlenecks, simplify repetitive work and improve operational performance across your business.',
-    image: '/home/contact-center.jpg',
+    images: ['/home/associates.jpg', '/home/agent1.png'],
     links: [
       ['Move repetitive processes into reliable managed operations', '/solutions/business-process-outsourcing'],
       ['Automate high-volume workflows with confidence', '/solutions/ai-technology-solutions/software-development'],
@@ -36,7 +36,7 @@ const outcomes = [
     headline: 'Create experiences customers remember.',
     text:
       'Deliver faster, more consistent and more human customer experiences across every touchpoint.',
-    image: '/landing_pages/customer-experience.jpg',
+    images: ['/landing_pages/customer-experience.jpg'],
     links: [
       ['Deliver responsive customer support across every channel', '/solutions/customer-experience-solutions/customer-support-services'],
       ['Improve service quality through continuous assurance', '/solutions/customer-experience-solutions/contact-centre-quality-analytics'],
@@ -49,7 +49,7 @@ const outcomes = [
     headline: 'Move from AI curiosity to measurable impact.',
     text:
       'Identify practical AI opportunities that improve service delivery, operations and decision making.',
-    image: '/landing_pages/ai-operations.jpg',
+    images: ['/landing_pages/ai-operations.jpg'],
     links: [
       ['Equip teams with intelligent AI assistance', '/solutions/ai-technology-solutions/conversational-ai-chatbots'],
       ['Automate repetitive customer and operational workflows', '/solutions/ai-technology-solutions/software-development'],
@@ -62,7 +62,7 @@ const outcomes = [
     headline: 'Build a workforce ready for growth.',
     text:
       'Source, deploy and manage talent that helps your business remain agile and scalable.',
-    image: '/home/associates.jpg',
+    images: ['/home/workforce.jpeg'],
     links: [
       ['Access verified professionals faster', '/solutions/ai-technology-solutions/staff-augmentation'],
       ['Deploy flexible teams that scale with demand', '/solutions/assessment-certification-services/skills-assessments'],
@@ -75,7 +75,7 @@ const outcomes = [
     headline: 'Turn operational information into confident decisions.',
     text:
       'Bring together customer, workforce and operational insights to help leaders act sooner.',
-    image: '/home/omni-em.png',
+    images: ['/home/omni-em.png'],
     links: [
       ['Visualise operational performance in real time', '/solutions/enterprise-platforms/qa-toolbox'],
       ['Identify trends before they become problems', '/solutions/customer-experience-solutions/contact-centre-quality-analytics'],
@@ -84,141 +84,101 @@ const outcomes = [
   },
 ]
 
+function Headline({ text }) {
+  return (
+    <h3>
+      {text.split(/(growth)/i).map((part, index) =>
+        part.toLowerCase() === 'growth' ? (
+          <span className="opportunity-scene__growth" key={index}>
+            {part}
+          </span>
+        ) : (
+          part
+        ),
+      )}
+    </h3>
+  )
+}
+
 export default function OpportunityStory() {
-  const trackRef = useRef(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  function scrollToOutcome(index) {
-    const track = trackRef.current
-    const panel = track?.children[index]
-    if (!track || !panel) return
-
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
-    setActiveIndex(index)
-  }
-
-  function step(direction) {
-    const nextIndex = Math.min(Math.max(activeIndex + direction, 0), outcomes.length - 1)
-    scrollToOutcome(nextIndex)
-  }
+  const sectionRef = useRef(null)
 
   useEffect(() => {
-    const track = trackRef.current
-    if (!track) return undefined
+    const root = sectionRef.current
+    if (!root) return undefined
 
-    function updateActivePanel() {
-      const panels = Array.from(track.children)
-      const trackCenter = track.scrollLeft + track.clientWidth / 2
-      const nearestIndex = panels.reduce((nearest, panel, index) => {
-        const panelCenter = panel.offsetLeft + panel.clientWidth / 2
-        const distance = Math.abs(panelCenter - trackCenter)
-        return distance < nearest.distance ? { index, distance } : nearest
-      }, { index: 0, distance: Number.POSITIVE_INFINITY }).index
+    const scenes = Array.from(root.querySelectorAll('[data-opportunity-scene]'))
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-      setActiveIndex(nearestIndex)
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      scenes.forEach((scene) => scene.classList.add('is-in'))
+      return undefined
     }
 
-    updateActivePanel()
-    track.addEventListener('scroll', updateActivePanel, { passive: true })
-    window.addEventListener('resize', updateActivePanel)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-in', entry.isIntersecting)
+        })
+      },
+      { threshold: 0.42, rootMargin: '0px 0px -8% 0px' },
+    )
 
-    return () => {
-      track.removeEventListener('scroll', updateActivePanel)
-      window.removeEventListener('resize', updateActivePanel)
-    }
+    scenes.forEach((scene) => observer.observe(scene))
+    return () => observer.disconnect()
   }, [])
 
   return (
-    <section className="opportunity-story">
+    <section className="opportunity-story" ref={sectionRef}>
       <div className="site-container opportunity-story__inner">
         <div className="opportunity-story__head">
-          <div className="opportunity-story__intro">
-            <p>Where we create the greatest impact</p>
+          <div className="reference-section__head">
+            <p className="reference-section__eyebrow">
+              <span aria-hidden="true" />
+              Where we create the greatest impact
+            </p>
             <h2>What opportunity are you trying to unlock?</h2>
           </div>
-
-          <div className="opportunity-story__controls" aria-label="Opportunity carousel controls">
-            <div className="opportunity-story__markers" role="tablist" aria-label="Choose opportunity">
-              {outcomes.map((outcome, index) => (
-                <button
-                  aria-label={`Show ${outcome.label}`}
-                  aria-selected={activeIndex === index}
-                  className="opportunity-story__marker"
-                  data-active={activeIndex === index}
-                  key={outcome.label}
-                  onClick={() => scrollToOutcome(index)}
-                  role="tab"
-                  type="button"
-                />
-              ))}
-            </div>
-            <div className="opportunity-story__arrows">
-              <button aria-label="Previous opportunity" disabled={activeIndex === 0} onClick={() => step(-1)} type="button">
-                ←
-              </button>
-              <button aria-label="Next opportunity" disabled={activeIndex === outcomes.length - 1} onClick={() => step(1)} type="button">
-                →
-              </button>
-            </div>
-          </div>
         </div>
+      </div>
 
-        <div className="opportunity-story__track" aria-label="Business outcomes" ref={trackRef}>
-          {outcomes.map((outcome, outcomeIndex) => (
-            <div className="opportunity-story__panel" key={outcome.label}>
-              <div className={`opportunity-story__stage${outcomeIndex % 2 ? ' opportunity-story__stage--reverse' : ''}`}>
-                <figure className="opportunity-story__media">
-                  <img src={outcome.image} alt="" />
+      <div className="opportunity-story__scenes">
+        {outcomes.map((outcome, index) => (
+          <article
+            className={`opportunity-scene${outcome.images.length > 1 ? ' opportunity-scene--pair' : ''}`}
+            data-opportunity-scene=""
+            data-reverse={index % 2 ? 'true' : 'false'}
+            key={outcome.label}
+          >
+            <div className="opportunity-scene__pin">
+              <div className="opportunity-scene__stage">
+                <div className="opportunity-scene__media-slot" aria-hidden="true" />
+                <figure className={`opportunity-scene__media${outcome.images.length > 1 ? ' opportunity-scene__media--pair' : ''}`}>
+                  {outcome.images.map((src) => (
+                    <img src={src} alt="" key={src} />
+                  ))}
                   <figcaption>{outcome.caption}</figcaption>
                 </figure>
-
-                <article className="opportunity-story__content">
-                  <div className="opportunity-story__step">
-                    <span>{String(outcomeIndex + 1).padStart(2, '0')}</span>
-                    <span>/ {String(outcomes.length).padStart(2, '0')}</span>
-                  </div>
-                  <p className="opportunity-story__label">{outcome.label}</p>
-                  <h3>{outcome.headline}</h3>
-                  <p className="opportunity-story__copy">{outcome.text}</p>
-                  <nav className="opportunity-story__links" aria-label={`${outcome.label} related outcomes`}>
-                    {outcome.links.map(([label, href], index) => (
-                      <Link href={href} key={label} style={{ '--link-index': index }}>
+                <div className="opportunity-scene__copy">
+                  <p className="opportunity-scene__index">
+                    {String(index + 1).padStart(2, '0')} / {String(outcomes.length).padStart(2, '0')}
+                  </p>
+                  <p className="opportunity-scene__label">{outcome.label}</p>
+                  <Headline text={outcome.headline} />
+                  <p className="opportunity-scene__text">{outcome.text}</p>
+                  <nav className="opportunity-scene__links" aria-label={`${outcome.label} related outcomes`}>
+                    {outcome.links.map(([label, href]) => (
+                      <Link href={href} key={label}>
                         <span>{label}</span>
                         <span aria-hidden="true">→</span>
                       </Link>
                     ))}
                   </nav>
-                </article>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="opportunity-story__mobile-list" aria-label="Business outcomes">
-          {outcomes.map((outcome, outcomeIndex) => (
-            <article className="opportunity-story__mobile-item" key={outcome.label}>
-              <figure>
-                <img src={outcome.image} alt="" />
-                <figcaption>{outcome.caption}</figcaption>
-              </figure>
-              <div className="opportunity-story__step">
-                <span>{String(outcomeIndex + 1).padStart(2, '0')}</span>
-                <span>/ {String(outcomes.length).padStart(2, '0')}</span>
-              </div>
-              <p className="opportunity-story__label">{outcome.label}</p>
-              <h3>{outcome.headline}</h3>
-              <p>{outcome.text}</p>
-              <nav aria-label={`${outcome.label} related outcomes`}>
-                {outcome.links.map(([label, href]) => (
-                  <Link href={href} key={label}>
-                    <span>{label}</span>
-                    <span aria-hidden="true">→</span>
-                  </Link>
-                ))}
-              </nav>
-            </article>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
     </section>
   )

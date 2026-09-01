@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import SectionHead from '@/components/layout/SectionHead'
 
 const transformationSteps = [
   { title: 'Business Challenge', description: 'Clarify the pressure, customer friction, or growth barrier that needs to change.' },
@@ -56,11 +57,12 @@ export default function TransformationPath({ assessmentGoal, assessmentContext, 
       ) : null}
       <div className="site-container">
         <div className="transformation-path__intro">
-          <p>Transformation path</p>
-          <h2>From Opportunity to Impact</h2>
-          <p className="transformation-path__copy">
-            A practical journey from today&apos;s business pressure to measurable operational improvement.
-          </p>
+          <SectionHead
+            copy="A practical journey from today's business pressure to measurable operational improvement."
+            eyebrow="Transformation path"
+          >
+            From Opportunity to Impact
+          </SectionHead>
         </div>
 
         <ol className="transformation-path__rail" ref={listRef}>

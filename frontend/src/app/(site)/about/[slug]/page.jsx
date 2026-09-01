@@ -3,6 +3,7 @@ import SiteShell from '@/components/layout/SiteShell'
 import AboutPage from '@/features/about/components/AboutPage'
 import { aboutSlugs, getAboutPage } from '@/features/about/data/about'
 
+
 export function generateStaticParams() {
   return aboutSlugs.map((slug) => ({ slug }))
 }
@@ -24,9 +25,9 @@ export default async function AboutSlugRoute({ params }) {
   if (!page) notFound()
 
   return (
-    <SiteShell>
+    <SiteShell chrome="static">
       <main>
-        <AboutPage page={page} />
+        <AboutPage page={page} slug={resolvedParams.slug} />
       </main>
     </SiteShell>
   )

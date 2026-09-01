@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import SectionHead from '@/components/layout/SectionHead'
 import { SolutionTrust } from './SolutionProof'
 
 export default function SolutionOverview({
@@ -13,13 +14,14 @@ export default function SolutionOverview({
 }) {
   return (
     <div className="overview-board">
-      <h2 className="overview-board__heading">{headingLabel}</h2>
+      <SectionHead className="section-head--on-dark" eyebrow={headingLabel}>
+        {heading || headingLabel}
+      </SectionHead>
 
       <article className="overview-feature">
         <div className="overview-feature__copy">
           <span className="outcome-card__bar" aria-hidden="true" />
           <p className="outcome-card__label">{featureLabel}</p>
-          {heading ? <h3>{heading}</h3> : null}
           {body ? <p className="overview-feature__body">{body}</p> : null}
         </div>
         {media || image ? (

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import SectionHead from '@/components/layout/SectionHead'
 
 export default function SolutionFaq({ items }) {
   const [openIndex, setOpenIndex] = useState(0)
@@ -9,13 +10,8 @@ export default function SolutionFaq({ items }) {
 
   return (
     <section className="solution-anchor bg-white py-[clamp(56px,7vw,96px)] text-[#101728]" id="faq">
-      <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.22fr)]">
-        <div className="max-w-[28rem]">
-          <p className="mb-3 font-medium uppercase tracking-[.08em] text-[#2c3280]">FAQ</p>
-          <h2 className="m-0 text-[clamp(1.55rem,1.8vw,2.2rem)] font-semibold leading-[1.18]">
-            Questions teams usually ask
-          </h2>
-        </div>
+      <div className="site-container">
+        <SectionHead eyebrow="FAQ">Questions teams usually ask</SectionHead>
         <div className="border-t border-[#c5d2ea]">
           {items.map(([question, answer], index) => {
             const open = openIndex === index
