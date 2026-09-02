@@ -7,13 +7,11 @@ export default function AssessmentModalProvider() {
   const [open, setOpen] = useState(false)
   const [initialGoal, setInitialGoal] = useState('')
   const [initialContext, setInitialContext] = useState(null)
-  const [initialStep, setInitialStep] = useState('')
 
   useEffect(() => {
     function handleOpenAssessment(event) {
       setInitialGoal(event.detail?.goal || '')
       setInitialContext(event.detail?.context || null)
-      setInitialStep(event.detail?.step || '')
       setOpen(true)
     }
 
@@ -26,8 +24,11 @@ export default function AssessmentModalProvider() {
       open={open}
       initialGoal={initialGoal}
       initialContext={initialContext}
-      initialStep={initialStep}
       onClose={() => setOpen(false)}
+      onBookCall={() => {
+        setOpen(false)
+        window.dispatchEvent(new CustomEvent('omni:open-discovery'))
+      }}
     />
   )
 }

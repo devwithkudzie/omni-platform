@@ -78,9 +78,9 @@ export default function Header() {
     setActiveCategoryByMenu((current) => ({ ...current, [groupLabel]: index }))
   }
 
-  function openAssessment() {
+  function openDiscovery() {
     closeMenu()
-    window.dispatchEvent(new CustomEvent('omni:open-assessment'))
+    window.dispatchEvent(new CustomEvent('omni:open-discovery'))
   }
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function Header() {
           })}
         </nav>
 
-        <button className="desktop-header__cta" type="button" onClick={openAssessment}>Book a discovery call</button>
+        <button className="desktop-header__cta" type="button" onClick={openDiscovery}>Book a discovery call</button>
       </div>
 
       {openGroup ? (

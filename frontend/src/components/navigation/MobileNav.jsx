@@ -22,6 +22,11 @@ export default function MobileNav() {
     setOpenGroups((current) => ({ ...current, [key]: !current[key] }))
   }
 
+  function openDiscovery() {
+    closeNav()
+    window.dispatchEvent(new CustomEvent('omni:open-discovery'))
+  }
+
   function openAssessment() {
     closeNav()
     window.dispatchEvent(new CustomEvent('omni:open-assessment'))
@@ -128,7 +133,12 @@ export default function MobileNav() {
             )
           })}
 
-          <button className="mobile-drawer__cta" type="button" onClick={openAssessment}>Book a discovery call</button>
+          <button className="mobile-drawer__cta" type="button" onClick={openAssessment}>
+            Get a Free Operations Assessment
+          </button>
+          <button className="mobile-drawer__cta" type="button" onClick={openDiscovery}>
+            Book a discovery call
+          </button>
         </nav>
       </aside>
     </header>

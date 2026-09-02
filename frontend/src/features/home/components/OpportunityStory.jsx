@@ -23,7 +23,7 @@ const outcomes = [
     headline: 'Make your operations work smarter.',
     text:
       'Remove bottlenecks, simplify repetitive work and improve operational performance across your business.',
-    images: ['/home/associates.jpg', '/home/agent1.png'],
+    images: ['/home/operational efficienct.jpeg'],
     links: [
       ['Move repetitive processes into reliable managed operations', '/solutions/business-process-outsourcing'],
       ['Automate high-volume workflows with confidence', '/solutions/ai-technology-solutions/software-development'],

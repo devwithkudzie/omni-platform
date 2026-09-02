@@ -119,16 +119,7 @@ export default function PublicPage({ page }) {
   const hasPolicySections = Boolean(page.policySections?.length)
 
   function openBookingSession() {
-    window.dispatchEvent(new CustomEvent('omni:open-assessment', {
-      detail: {
-        step: 'meeting',
-        context: {
-          category: 'OmniContact',
-          title: 'Discovery Session',
-          objective: 'Map the right OmniContact solution',
-        },
-      },
-    }))
+    window.dispatchEvent(new CustomEvent('omni:open-discovery'))
   }
 
   return (

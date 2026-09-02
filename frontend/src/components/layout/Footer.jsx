@@ -1,5 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import { navMenu } from '@/components/navigation/navigation.data'
+import AssessmentModalButton from '@/components/assessment/AssessmentModalButton'
+import { ASSESSMENT_COPY } from '@/config/assessment'
 
 const socialLinks = [
   ['LinkedIn', 'https://zw.linkedin.com/company/omnicontactbpo'],
@@ -30,7 +34,6 @@ const footerColumns = [
       ['Careers', '/about/careers'],
       ['Contact', '/contact'],
       ['Privacy Policy', '/privacy-policy'],
-      ['Schedule Discovery', '/contact'],
     ],
   },
 ]
@@ -67,6 +70,13 @@ export default function Footer() {
                       <Link href={href}>{label}</Link>
                     </li>
                   ))}
+                  {column.title === 'Company' ? (
+                    <li>
+                      <AssessmentModalButton className="site-footer__text-btn">
+                        {ASSESSMENT_COPY.ctaShort}
+                      </AssessmentModalButton>
+                    </li>
+                  ) : null}
                 </ul>
               </section>
             ))}
