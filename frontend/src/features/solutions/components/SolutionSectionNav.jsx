@@ -64,15 +64,15 @@ export default function SolutionSectionNav({
 
   return (
     <>
-      <div aria-hidden="true" className="solution-section-nav__sentinel" ref={sentinelRef} />
-      <nav aria-label="On this page" className={`solution-section-nav${stuck ? ' is-stuck' : ''}`}>
-        <div className="site-container solution-section-nav__inner">
-          {title ? <p className="solution-section-nav__title">{title}</p> : null}
+      <div aria-hidden="true" className="sx-subnav__sentinel" ref={sentinelRef} />
+      <nav aria-label="On this page" className={`sx-subnav${stuck ? ' is-stuck' : ''}`}>
+        <div className="site-container sx-subnav__inner">
+          {title ? <p className="sx-subnav__title">{title}</p> : null}
 
-          <div className="solution-section-nav__links">
+          <div className="sx-subnav__links">
             {links.map((link) => (
               <a
-                className={`solution-section-nav__link${active === link.href ? ' is-active' : ''}`}
+                className={`sx-subnav__link${active === link.href ? ' is-active' : ''}`}
                 href={link.href}
                 key={link.href}
                 onClick={() => setActive(link.href)}
@@ -81,7 +81,7 @@ export default function SolutionSectionNav({
               </a>
             ))}
             <AssessmentModalButton
-              className="solution-section-nav__cta"
+              className="sx-subnav__cta"
               context={assessmentContext}
               goal={assessmentGoal}
               step="meeting"

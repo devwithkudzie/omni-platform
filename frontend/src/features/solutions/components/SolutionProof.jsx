@@ -13,7 +13,7 @@ export function SolutionStats({ stats }) {
   if (!stats?.length) return null
 
   return (
-    <dl className="solution-stats">
+    <dl className="sx-stats">
       {stats.map(([value, label]) => (
         <div key={label}>
           <dt>{value}</dt>
@@ -26,21 +26,20 @@ export function SolutionStats({ stats }) {
 
 export function SolutionTrust({ quote }) {
   return (
-    <div className="solution-trust">
+    <div className="sx-trust">
       {quote ? (
-        <figure>
-          <blockquote>“{quote.text}”</blockquote>
+        <figure className="sx-trust__quote">
+          <span className="sx-trust__mark" aria-hidden="true">“</span>
+          <blockquote>{quote.text}</blockquote>
           {quote.attribution ? <figcaption>{quote.attribution}</figcaption> : null}
         </figure>
       ) : null}
 
-      <div className="solution-trust__logos">
-        <p>Trusted delivery</p>
-        <div className="solution-trust__track">
+      <div className="sx-trust__logos">
+        <p className="hx-eyebrow">Trusted delivery</p>
+        <div className="sx-trust__track">
           {partnerLogos.map((logo) => (
-            <div className="solution-trust__logo" key={logo.title}>
-              <img alt={logo.title} src={logo.image} />
-            </div>
+            <img alt={logo.title} key={logo.title} src={logo.image} />
           ))}
         </div>
       </div>

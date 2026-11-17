@@ -44,6 +44,30 @@ return [
         'to_za' => $env('CONTACT_TO_ZA', 'info@omnicontact.biz'),
         'cc' => $env('CONTACT_CC', 'kudzai.mukungu@omnicontact.biz'),
     ],
+    'zoho' => [
+        'client_id' => $env('ZOHO_CLIENT_ID', ''),
+        'client_secret' => $env('ZOHO_CLIENT_SECRET', ''),
+        'refresh_token' => $env('ZOHO_REFRESH_TOKEN', ''),
+        'accounts_url' => $env('ZOHO_ACCOUNTS_URL', 'https://accounts.zoho.com'),
+        'api_domain' => $env('ZOHO_API_DOMAIN', 'https://www.zohoapis.com'),
+        'lead_source' => $env('ZOHO_LEAD_SOURCE', 'MaaS Digital Marketing Health Check'),
+        // API names of the Lead fields in the "Digital Marketing Health Check"
+        // section of the Zoho Leads layout. Set one to "-" to stop writing it.
+        'field_map' => [
+            'overall_score' => $env('ZOHO_FIELD_OVERALL_SCORE', 'Health_Check_Score'),
+            'category' => $env('ZOHO_FIELD_CATEGORY', 'Health_Check_Category'),
+            'strategy_score' => $env('ZOHO_FIELD_STRATEGY_SCORE', 'Strategy_Direction_Score'),
+            'visibility_score' => $env('ZOHO_FIELD_VISIBILITY_SCORE', 'Visibility_Reach_Score'),
+            'leads_score' => $env('ZOHO_FIELD_LEADS_SCORE', 'Lead_Generation_Conversion_Score'),
+            'content_score' => $env('ZOHO_FIELD_CONTENT_SCORE', 'Content_Engagement_Score'),
+            'measurement_score' => $env('ZOHO_FIELD_MEASUREMENT_SCORE', 'Measurement_Optimisation_Score'),
+            'completed_date' => $env('ZOHO_FIELD_COMPLETED_DATE', 'Health_Check_Completed_Date'),
+            'challenge' => $env('ZOHO_FIELD_CHALLENGE', 'Marketing_Challenge'),
+            'next_steps' => $env('ZOHO_FIELD_NEXT_STEPS', 'Recommended_Next_Steps'),
+            'email_opt_in' => $env('ZOHO_FIELD_EMAIL_OPT_IN', 'Email_Op_In'),
+            'lead_source_tag' => $env('ZOHO_FIELD_LEAD_SOURCE_TAG', ''),
+        ],
+    ],
     'paynow' => [
         'id' => $env('PAYNOW_ID'),
         'key' => $env('PAYNOW_KEY'),

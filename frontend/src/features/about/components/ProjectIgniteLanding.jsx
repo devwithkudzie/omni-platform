@@ -73,7 +73,7 @@ export default function ProjectIgniteLanding({ page }) {
         title="Project Ignite"
       />
 
-      <section className="solution-anchor solution-group solution-group--navy" id="overview">
+      <section className="solution-anchor sx-band sx-band--soft" id="overview">
         <div className="site-container">
           <SolutionOverview
             body="Many women and young people face barriers to digital access, skills, mentorship, and market participation. Project Ignite responds with practical learning pathways and community-centred support."
@@ -103,7 +103,7 @@ export default function ProjectIgniteLanding({ page }) {
         </div>
       </section>
 
-      <section className="solution-anchor solution-group solution-group--dark" id="impact">
+      <section className="solution-anchor sx-band" id="impact">
         <div className="site-container">
           <SolutionOutcomes
             eyebrow="Impact models"
@@ -114,10 +114,10 @@ export default function ProjectIgniteLanding({ page }) {
         </div>
       </section>
 
-      <section className="solution-anchor solution-group solution-group--navy" id="partners">
+      <section className="solution-anchor sx-band sx-band--soft" id="partners">
         <div className="site-container">
           <SectionHead
-            className="section-head--on-dark"
+           
             copy="Project Ignite brings together organizations committed to women’s empowerment, youth opportunity, financial inclusion, and digital skills development."
             eyebrow="Partnership"
           >
@@ -133,10 +133,10 @@ export default function ProjectIgniteLanding({ page }) {
         </div>
       </section>
 
-      <section className="solution-anchor solution-group solution-group--dark" id="gallery">
+      <section className="solution-anchor sx-band" id="gallery">
         <div className="site-container">
           <SectionHead
-            className="section-head--on-dark"
+           
             copy="Moments from the Project Ignite launch and community."
             eyebrow="Gallery"
           >
@@ -152,20 +152,19 @@ export default function ProjectIgniteLanding({ page }) {
         </div>
       </section>
 
-      <section className="solution-anchor solution-group solution-group--navy" id="news">
+      <section className="solution-anchor sx-band sx-band--soft" id="news">
         <div className="site-container">
           <SectionHead
-            className="section-head--on-dark"
+           
             copy="Continue into the original Project Ignite articles for deeper context."
             eyebrow="News"
           >
             Stories and launch updates
           </SectionHead>
-          <div className="overview-cards">
+          <div className="sx-cards">
             {newsItems.map((item) => (
-              <a href={item.href} key={item.href} rel="noreferrer" target="_blank">
-                <span className="outcome-card__bar" aria-hidden="true" />
-                <p className="outcome-card__label">Article</p>
+              <a className="sx-card sx-card--link" href={item.href} key={item.href} rel="noreferrer" target="_blank">
+                <p className="sx-label">Article</p>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
               </a>

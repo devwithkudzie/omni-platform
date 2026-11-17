@@ -511,6 +511,16 @@ body.project-ignite-nav-docked .site-chrome {
   text-align: left;
 }
 
+.home-hero__poster {
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
 .home-hero__video {
   position: absolute;
   inset: 0;
@@ -530,6 +540,15 @@ body.project-ignite-nav-docked .site-chrome {
 
 .home-hero__mobile-video-frame {
   display: none;
+}
+
+.home-hero__mobile-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
 }
 
 .home-hero__mobile-cta {
@@ -2188,6 +2207,7 @@ body.project-ignite-nav-docked .site-chrome {
 }
 
 .reference-industry-card {
+  position: relative;
   min-height: clamp(360px, 35vw, 560px);
   flex: 0 0 clamp(270px, 20vw, 430px);
   display: grid;
@@ -2200,9 +2220,33 @@ body.project-ignite-nav-docked .site-chrome {
   padding: clamp(26px, 2.8vw, 48px);
   scroll-snap-align: start;
   text-decoration: none;
+  isolation: isolate;
   transition:
     filter 0.18s ease,
     transform 0.18s ease;
+}
+
+.reference-industry-card__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.reference-industry-card--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(12, 18, 72, 0.18) 0%, rgba(12, 18, 72, 0.72) 58%, rgba(10, 14, 48, 0.92) 100%);
+}
+
+.reference-industry-card--photo {
+  background: #101654 !important;
 }
 
 .reference-industry-card:nth-child(4n + 1) {
@@ -5254,6 +5298,8 @@ body.project-ignite-nav-docked .site-chrome {
   }
 
   .home-hero__mobile-video {
+    position: relative;
+    z-index: 1;
     display: block;
     width: 100%;
     height: 100%;
@@ -6234,6 +6280,7 @@ h6,
 }
 
 .reference-section,
+.reference-section--services,
 .reference-section--industries,
 .reference-section--insights,
 .reference-final-cta {
@@ -6412,6 +6459,7 @@ h6,
 }
 
 .reference-section,
+.reference-section--services,
 .reference-section--industries,
 .reference-section--insights,
 .reference-final-cta {
@@ -10333,6 +10381,640 @@ section.opportunity-story {
 
   .omni-assess__btn {
     width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Insight article (blog detail page)
+   ========================================================================== */
+
+.insight-article {
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+.insight-article__container {
+  max-width: 1040px;
+}
+
+.insight-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+  color: var(--brand-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.insight-back span {
+  display: inline-block;
+  transition: transform 0.18s ease;
+}
+
+.insight-back:hover {
+  text-decoration: underline;
+}
+
+.insight-back:hover span {
+  transform: translateX(-3px);
+}
+
+.insight-meta {
+  margin-bottom: clamp(28px, 4vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 28px);
+  border-bottom: 1px solid rgba(16, 23, 40, 0.12);
+}
+
+.insight-meta__eyebrow {
+  margin: 0 0 10px;
+  color: var(--brand-primary);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.insight-meta__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: var(--brand-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.insight-meta__row > * + *::before {
+  content: '·';
+  margin-inline-end: 10px;
+  color: rgba(16, 23, 40, 0.32);
+}
+
+.insight-meta__author {
+  color: #101728;
+}
+
+/* Prose body — CMS-authored HTML (Quill editor output) */
+.insight-body {
+  color: #1b2333;
+  font-size: clamp(1.02rem, 0.3vw + 0.96rem, 1.14rem);
+  line-height: 1.78;
+}
+
+.insight-body > :first-child {
+  margin-top: 0;
+}
+
+.insight-body > :last-child {
+  margin-bottom: 0;
+}
+
+.insight-body p {
+  margin: 0 0 1.3em;
+}
+
+/* Quill leaves empty <p><br></p> as a manual spacer between sections —
+   let it act as a small gap instead of stacking a full paragraph margin */
+.insight-body p:has(> br:only-child) {
+  margin: 0 0 0.6em;
+}
+
+/* Authors have no heading button in this CMS, so a section break is written
+   as a whole paragraph in bold. Give that pattern a bit of visual weight so
+   it reads as a sub-head instead of just more bold text mid-paragraph. */
+.insight-body p:has(> strong:only-child) {
+  margin: 0.2em 0 0.7em;
+  color: #101728;
+  font-size: 1.16em;
+  letter-spacing: -0.005em;
+}
+
+.insight-body h1,
+.insight-body h2,
+.insight-body h3,
+.insight-body h4 {
+  margin: 1.7em 0 0.7em;
+  color: #101728;
+  font-family: 'Inter Tight', Inter, Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+}
+
+.insight-body h2 {
+  font-size: clamp(1.4rem, 1vw + 1.2rem, 1.7rem);
+}
+
+.insight-body h3 {
+  font-size: clamp(1.2rem, 0.6vw + 1.08rem, 1.4rem);
+}
+
+.insight-body h4 {
+  font-size: 1.12rem;
+}
+
+.insight-body strong {
+  color: #101728;
+  font-weight: 700;
+}
+
+.insight-body a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+  text-decoration-color: rgba(44, 50, 128, 0.35);
+  text-underline-offset: 3px;
+}
+
+.insight-body a:hover {
+  text-decoration-color: currentColor;
+}
+
+.insight-body ul,
+.insight-body ol {
+  margin: 0 0 1.3em;
+  padding-left: 1.3em;
+}
+
+.insight-body li {
+  margin-bottom: 0.5em;
+}
+
+.insight-body li::marker {
+  color: var(--brand-primary);
+}
+
+.insight-body blockquote {
+  margin: 1.6em 0;
+  padding: 0.2em 0 0.2em 1.3em;
+  border-left: 3px solid var(--brand-primary);
+  color: #384057;
+  font-size: 1.08em;
+  font-style: italic;
+}
+
+.insight-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.8em 0;
+  border-radius: var(--radius);
+}
+
+.insight-body figure {
+  margin: 1.8em 0;
+}
+
+.insight-body figcaption {
+  margin-top: 0.6em;
+  color: var(--brand-muted);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+.insight-body hr {
+  margin: 2.4em 0;
+  border: none;
+  border-top: 1px solid rgba(16, 23, 40, 0.14);
+}
+
+.insight-body pre {
+  margin: 1.6em 0;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: #101728;
+  color: #e7ebf2;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.insight-body code {
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: rgba(16, 23, 40, 0.07);
+  font-size: 0.9em;
+}
+
+.insight-body pre code {
+  padding: 0;
+  background: none;
+}
+
+.insight-body table {
+  display: block;
+  width: 100%;
+  margin: 1.6em 0;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  overflow-x: auto;
+}
+
+.insight-body th,
+.insight-body td {
+  padding: 10px 12px;
+  border: 1px solid rgba(16, 23, 40, 0.14);
+  text-align: left;
+}
+
+.insight-body th {
+  background: rgba(16, 23, 40, 0.04);
+  font-weight: 600;
+}
+
+/* Quill alignment/indent classes — default to left for readability,
+   honour explicit center/right since those are more likely intentional */
+.insight-body [class*='ql-align-'] {
+  text-align: left;
+}
+
+.insight-body .ql-align-center {
+  text-align: center;
+}
+
+.insight-body .ql-align-right {
+  text-align: right;
+}
+
+.insight-body .ql-indent-1 {
+  padding-left: 1.5em;
+}
+
+.insight-body .ql-indent-2 {
+  padding-left: 3em;
+}
+
+.insight-body .ql-indent-3 {
+  padding-left: 4.5em;
+}
+
+.insight-status {
+  color: var(--brand-muted);
+  font-size: 1.02rem;
+}
+
+.insight-status--error {
+  color: #b42318;
+}
+
+@media (max-width: 640px) {
+  .insight-body {
+    font-size: 1rem;
+    line-height: 1.72;
+  }
+
+  .insight-meta__row {
+    font-size: 0.86rem;
+  }
+
+  .insight-body pre {
+    padding: 14px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ==========================================================================
+   Testimonials (home page)
+   ========================================================================== */
+
+.reference-section--testimonials .reference-section__head {
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.voice-track {
+  display: flex;
+  gap: 32px;
+  padding: 14px clamp(32px, 5.5vw, 96px);
+  overflow-x: auto;
+  scroll-padding-inline: clamp(32px, 5.5vw, 96px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.voice-track::-webkit-scrollbar {
+  display: none;
+}
+
+.voice-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: clamp(14px, 2vw, 22px);
+}
+
+.voice-controls__btn {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1.5px solid var(--brand-primary);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--brand-primary);
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.voice-controls__btn:hover,
+.voice-controls__btn:focus-visible {
+  background: var(--brand-primary);
+  color: #fff;
+}
+
+.voice-controls__btn:focus-visible {
+  outline: 3px solid #e82830;
+  outline-offset: 3px;
+}
+
+@media (max-width: 998px) {
+  .voice-track {
+    padding-inline: clamp(20px, 5vw, 36px);
+    scroll-padding-inline: clamp(20px, 5vw, 36px);
+  }
+}
+
+.reference-section--testimonials .reference-section__head h2 em {
+  color: #e82830;
+  font-style: normal;
+}
+
+/* Brand-navy cards on the section's light ground (same solid-colour card
+   treatment as the industry cards above). Sized so 6 quote lines always fit
+   the space padding, mark and attribution leave — the ellipsis is the real
+   cutoff, so every card is the same size and nothing overlaps. */
+.voice-card {
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 86vw);
+  height: 392px;
+  margin: 0;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  padding: clamp(26px, 2.4vw, 32px);
+  border: 0;
+  border-radius: 28px;
+  background: var(--brand-primary);
+  color: #fff;
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.voice-card:hover,
+.voice-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 40px -24px rgba(44, 50, 128, 0.7);
+}
+
+.voice-card:focus-visible {
+  outline: 3px solid #e82830;
+  outline-offset: 3px;
+}
+
+.voice-card__mark {
+  display: block;
+  height: 52px;
+  margin-bottom: 6px;
+  color: #ff4b52;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 4.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.85;
+}
+
+.voice-card blockquote {
+  flex: 1;
+  overflow: hidden;
+  margin: 0;
+  min-height: 0;
+}
+
+.voice-card blockquote p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 1.02rem;
+  font-weight: 400;
+  line-height: 1.62;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  text-overflow: ellipsis;
+}
+
+.voice-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 80px;
+  margin: 16px 0 0;
+  padding-top: 18px;
+  border-top: 2px solid #ff4b52;
+}
+
+.voice-card__avatar {
+  display: grid;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-family: 'Inter Tight', Inter, Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.voice-card__who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.voice-card__name {
+  overflow: hidden;
+  color: #fff;
+  font-family: 'Inter Tight', Inter, Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-card__role {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+@media (max-width: 640px) {
+  .voice-card {
+    height: 372px;
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .voice-card blockquote p {
+    font-size: 0.98rem;
+    line-height: 1.58;
+  }
+}
+
+/* Testimonial modal — reuses .discovery-modal / .discovery-modal__backdrop
+   for the overlay, matching the site's one modal convention. */
+.testimonial-modal__panel {
+  position: relative;
+  width: min(100%, 640px);
+  max-height: min(88vh, 620px);
+  overflow-y: auto;
+  padding: clamp(36px, 5vw, 56px);
+  border: 1px solid rgba(10, 10, 11, 0.1);
+  border-radius: 14px;
+  background: #fbfcff;
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.22);
+}
+
+.testimonial-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(10, 10, 11, 0.12);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.testimonial-modal__close:hover {
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+
+.testimonial-modal__mark {
+  display: block;
+  height: 56px;
+  margin-bottom: 8px;
+  color: #e82830;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 0.85;
+}
+
+.testimonial-modal__panel blockquote {
+  margin: 0;
+}
+
+.testimonial-modal__panel blockquote p {
+  margin: 0;
+  color: #101728;
+  font-size: clamp(1.1rem, 0.4vw + 1rem, 1.28rem);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.testimonial-modal__panel figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 2px solid #ed0000;
+}
+
+.testimonial-modal__name {
+  color: var(--brand-primary);
+  font-family: 'Inter Tight', Inter, Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.08rem;
+  font-weight: 650;
+}
+
+.testimonial-modal__role {
+  color: var(--brand-muted);
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.testimonial-modal__count {
+  margin: 14px 0 0;
+  color: var(--brand-muted);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.testimonial-modal__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #101728;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.testimonial-modal__nav:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.06);
+}
+
+.testimonial-modal__nav--prev {
+  left: clamp(10px, 4vw, 56px);
+}
+
+.testimonial-modal__nav--next {
+  right: clamp(10px, 4vw, 56px);
+}
+
+@media (max-width: 760px) {
+  .testimonial-modal__nav {
+    top: auto;
+    bottom: clamp(14px, 3vh, 28px);
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    transform: none;
+  }
+
+  .testimonial-modal__nav:hover {
+    transform: scale(1.06);
+  }
+
+  .testimonial-modal__nav--prev {
+    left: 14px;
+  }
+
+  .testimonial-modal__nav--next {
+    right: 14px;
   }
 }
 

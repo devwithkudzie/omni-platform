@@ -1,191 +1,83 @@
 import { industryIcons } from '@/features/industries/data/industryIcons'
+import { solutionServicePath } from '@/features/solutions/data/solutions'
 
 export const navMenu = [
   {
     label: 'Solutions',
-    tagline: 'AI, CX, BPO, assessment services, and enterprise platforms',
-    overviewHref: '/solutions/ai-technology-solutions',
+    tagline: 'AI-powered CX, marketing, platforms, and delivery services',
+    overviewHref: '/solutions/customer-experience-solutions',
+    overviewLabel: 'Solutions Overview',
     items: [
       {
-        label: 'AI & Technology Solutions',
-        href: '/solutions/ai-technology-solutions',
-        children: [
-          {
-            label: 'Conversational AI & Chatbot Solutions',
-            desc: 'Customer service chatbots, virtual assistants, and knowledge assistants.',
-            href: '/solutions/ai-technology-solutions/conversational-ai-chatbots',
-          },
-          {
-            label: 'Software Development',
-            desc: 'Custom apps, workflow tools, portals, APIs, and integrations.',
-            href: '/solutions/ai-technology-solutions/software-development',
-          },
-          {
-            label: 'Staff Augmentation',
-            desc: 'Specialist technology and AI talent for delivery teams.',
-            href: '/solutions/ai-technology-solutions/staff-augmentation',
-          },
-          {
-            label: 'Data Annotation & Labelling',
-            desc: 'Human-reviewed image, text, audio, and video annotation.',
-            href: '/solutions/ai-technology-solutions/data-annotation-labelling',
-          },
-        ],
+        label: 'Marketing as a Service (MaaS)',
+        desc: 'Strategy, creative, digital campaigns, CRM automation and reporting in one managed team.',
+        href: solutionServicePath('marketing-as-a-service'),
       },
       {
-        label: 'Customer Experience Solutions',
+        label: 'ARAMS School Management',
+        desc: 'School management system for records, fees, communication, and admin.',
+        href: solutionServicePath('arams'),
+      },
+      {
+        label: 'Customer Experience & BPO',
+        desc: 'Contact centre, support, omnichannel engagement, and back-office operations.',
         href: '/solutions/customer-experience-solutions',
-        children: [
-          {
-            label: 'Contact Centre Services',
-            desc: 'Inbound and outbound contact centre operations.',
-            href: '/solutions/customer-experience-solutions/contact-centre-services',
-          },
-          {
-            label: 'Contact Centre Quality & Analytics',
-            desc: 'Quality assurance, performance analytics, and compliance monitoring.',
-            href: '/solutions/customer-experience-solutions/contact-centre-quality-analytics',
-          },
-          {
-            label: 'Customer Support Services',
-            desc: 'Customer care, help desk, complaint resolution, and technical assistance.',
-            href: '/solutions/customer-experience-solutions/customer-support-services',
-          },
-          {
-            label: 'Omnichannel Customer Engagement',
-            desc: 'Live chat, WhatsApp, social, email, voice, and digital channels.',
-            href: '/solutions/customer-experience-solutions/omnichannel-engagement',
-          },
-        ],
       },
       {
-        label: 'Business Process Outsourcing',
-        href: '/solutions/business-process-outsourcing',
-        children: [
-          {
-            label: 'Back Office Processing',
-            desc: 'Document processing, data entry, records administration, and verification.',
-            href: '/solutions/business-process-outsourcing/back-office-processing',
-          },
-          {
-            label: 'Healthcare Administration Support',
-            desc: 'Patient administration, scheduling, records support, and operations.',
-            href: '/solutions/business-process-outsourcing/healthcare-administration',
-          },
-          {
-            label: 'Claims Processing Support',
-            desc: 'Claims intake, document checks, data validation, and case support.',
-            href: '/solutions/business-process-outsourcing/claims-processing',
-          },
-          {
-            label: 'Impact Sourcing',
-            desc: 'Inclusive outsourcing delivery with measurable social value.',
-            href: '/solutions/business-process-outsourcing/impact-sourcing',
-          },
-        ],
+        label: 'AI & Digital Solutions',
+        desc: 'Conversational AI, software development, and digital delivery.',
+        href: '/solutions/ai-technology-solutions',
       },
       {
-        label: 'Assessment & Certification Services',
-        href: '/solutions/assessment-certification-services',
-        children: [
-          {
-            label: 'Professional Testing',
-            desc: 'General certification and testing services.',
-            href: '/solutions/assessment-certification-services/professional-testing',
-          },
-          {
-            label: 'Pearson VUE Testing',
-            desc: 'Vendor-specific certification exams.',
-            href: '/solutions/assessment-certification-services/pearson-vue-testing',
-          },
-          {
-            label: 'Online Proctoring',
-            desc: 'Remote examination delivery.',
-            href: '/solutions/assessment-certification-services/online-proctoring',
-          },
-          {
-            label: 'Skills Assessments',
-            desc: 'Recruitment and workforce evaluation.',
-            href: '/solutions/assessment-certification-services/skills-assessments',
-          },
-        ],
+        label: 'Data Labelling & Annotation',
+        desc: 'Human-reviewed image, text, audio, and video annotation.',
+        href: solutionServicePath('data-annotation-labelling'),
       },
       {
-        label: 'Enterprise Platforms',
-        href: '/solutions/enterprise-platforms',
-        children: [
-          {
-            label: 'QA Toolbox',
-            desc: 'AI-powered quality assurance and performance insights.',
-            href: '/solutions/enterprise-platforms/qa-toolbox',
-          },
-          {
-            label: 'Asset Management System',
-            desc: 'Enterprise asset visibility and lifecycle control.',
-            href: '/solutions/enterprise-platforms/asset-management-system',
-          },
-          {
-            label: 'Recruitment Management System',
-            desc: 'End-to-end hiring workflow management.',
-            href: '/solutions/enterprise-platforms/recruitment-management-system',
-          },
-          {
-            label: 'School Management Platform',
-            desc: 'Academic records, fees, communication, and administration.',
-            href: '/solutions/enterprise-platforms/arams',
-          },
-        ],
+        label: 'Staff Augmentation',
+        desc: 'Specialist technology and AI talent for delivery teams.',
+        href: solutionServicePath('staff-augmentation'),
       },
     ],
   },
   {
     label: 'Industries',
-    tagline: 'Sectors our delivery teams run on',
+    tagline: 'Sector expertise for modern customer operations',
     overviewHref: '/industries',
+    overviewLabel: 'Industries Overview',
     items: [
-      { label: 'Financial Services & Banking', desc: 'KYC, collections, servicing, and disputes.', href: '/industries/financial-services', icon: industryIcons['financial-services'] },
-      { label: 'Insurance', desc: 'Claims, underwriting support, renewals, and care.', href: '/industries/insurance', icon: industryIcons.insurance },
-      { label: 'Healthcare', desc: 'Member services, scheduling, eligibility, and navigation.', href: '/industries/health', icon: industryIcons.health },
-      { label: 'Telecommunications', desc: 'Tiered support, retention, onboarding, and operations.', href: '/industries/technology', icon: industryIcons.technology },
-      { label: 'Technology & SaaS', desc: 'Product support, onboarding, and technical success.', href: '/industries/technology', icon: industryIcons.technology },
-      { label: 'Retail & E-commerce', desc: 'Orders, returns, loyalty, and marketplace operations.', href: '/industries/retail-ecommerce', icon: industryIcons['retail-ecommerce'] },
-      { label: 'Travel & Hospitality', desc: 'Reservations, disruption recovery, and loyalty.', href: '/industries/travel-hospitality', icon: industryIcons['travel-hospitality'] },
       { label: 'Education', desc: 'Admissions, learner support, enrolment, and operations.', href: '/industries/education', icon: industryIcons.education },
+      { label: 'Healthcare & Health-Tech', desc: 'Member services, scheduling, eligibility, and navigation.', href: '/industries/health', icon: industryIcons.health },
+      { label: 'Financial Services & Insurance', desc: 'KYC, collections, claims, servicing, and disputes.', href: '/industries/financial-services', icon: industryIcons['financial-services'] },
+      { label: 'Technology, AI & SaaS', desc: 'Product support, onboarding, and technical success.', href: '/industries/technology', icon: industryIcons.technology },
+      { label: 'Retail & E-commerce', desc: 'Orders, returns, loyalty, and marketplace operations.', href: '/industries/retail-ecommerce', icon: industryIcons['retail-ecommerce'] },
+      { label: 'Telecommunications', desc: 'Tiered support, retention, onboarding, and operations.', href: '/industries/technology', icon: industryIcons.technology },
+      { label: 'Government & Public Sector', desc: 'Citizen services and secure public operations.', href: '/solutions/business-process-outsourcing', icon: industryIcons.insurance },
+      { label: 'Travel & Hospitality', desc: 'Reservations, disruption recovery, and loyalty.', href: '/industries/travel-hospitality', icon: industryIcons['travel-hospitality'] },
+      { label: 'Media, Sports & Entertainment', desc: 'Audience engagement and campaign support.', href: '/industries', icon: industryIcons.technology },
     ],
   },
   {
-    label: 'About',
+    label: 'About Us',
     tagline: 'Who we are and how we work',
     overviewHref: '/about',
     items: [
-      {
-        label: 'Company',
-        href: '/about',
-        children: [
-          { label: 'Who We Are', desc: 'Our story, positioning, leadership, and footprint.', href: '/about/who-we-are' },
-          { label: 'Site Tour', desc: 'Walk our operations floor in 360° before you visit.', href: '/site-tour' },
-          { label: 'Vision, Mission & Values', desc: 'The principles behind how OmniContact works.', href: '/about/vision-mission-values' },
-          { label: 'Community Impact', desc: 'Community partnerships and measurable social value.', href: '/about/community-impact' },
-          { label: 'Project Ignite', desc: 'Digital leadership opportunities for women and girls.', href: '/about/project-ignite' },
-        ],
-      },
-      {
-        label: 'Careers & Culture',
-        href: '/about/careers',
-        children: [
-          { label: 'Careers', desc: 'Open roles across delivery and enabling teams.', href: '/about/careers' },
-          { label: 'Impact Sourcing', desc: 'Career pathways, training, and inclusive employment.', href: '/about/impact-sourcing' },
-        ],
-      },
+      { label: 'Who We Are', desc: 'Our story, positioning, leadership, and footprint.', href: '/about/who-we-are' },
+      { label: 'Why Choose Yamurai', desc: 'Human-to-Human delivery powered by AI and African expertise.', href: '/about/who-we-are' },
+      { label: 'Our Impact', desc: 'Community impact, including Project Ignite for women and girls in digital.', href: '/about/community-impact' },
+      { label: 'Careers & Culture', desc: 'Open roles across delivery and enabling teams.', href: '/about/careers' },
+      { label: 'Virtual Site Tour', desc: 'Walk our operations floor in 360° before you visit.', href: '/site-tour' },
     ],
   },
   {
     label: 'Insights',
-    tagline: 'Thinking, updates, and expert views',
+    tagline: 'Thinking, updates, and practical resources',
     overviewHref: '/insights',
     items: [
-      { label: 'Latest Insights', desc: 'Articles and updates from the OmniContact team.', href: '/insights' },
-      { label: 'Webinar Replay', desc: 'Partnership insights and customer operations conversations.', href: '/webinar-replay' },
+      { label: 'Articles & Insights', desc: 'Perspectives on AI-powered CX and digital operations.', href: '/insights' },
+      { label: 'Case Studies & Success Stories', desc: 'How organisations grow with Yamurai OmniContact.', href: '/insights' },
+      { label: 'Webinars & Events', desc: 'Partnership insights and customer operations conversations.', href: '/webinar-replay' },
+      { label: 'Resources & Guides', desc: 'Assessments and guides, including Digital Marketing Health Check.', href: '/assessment' },
     ],
   },
 ]

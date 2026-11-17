@@ -21,28 +21,46 @@ function formatDate(value) {
   return new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(value))
 }
 
+function estimateReadingMinutes(html) {
+  if (!html) return 0
+  const words = html
+    .replace(/<[^>]+>/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length
+
+  return words ? Math.max(1, Math.round(words / 200)) : 0
+}
+
 export default function InsightArticle({ post }) {
   const dateLabel = formatDate(post.created_at)
-  const byline = [dateLabel, post.author || 'OmniContact'].filter(Boolean).join(' · ')
+  const readingMinutes = estimateReadingMinutes(post.content)
 
   return (
     <>
       <SolutionHero
-        breadcrumbs={[
-          { label: 'Insights', href: '/insights' },
-          { label: post.title },
-        ]}
+        breadcrumbs={[{ label: 'Insights' }]}
         image={post.feature_image || '/home/associates.jpg'}
         subtitle={post.excerpt || 'Articles and expert views from the OmniContact team.'}
         title={post.title}
+        variant="article"
       />
 
-      <article className="solution-group solution-group--light">
-        <div className="site-container">
-          <p className="insight-byline">{byline}</p>
+      <article className="sx-band insight-article">
+        <div className="site-container insight-article__container">
           <Link className="insight-back" href="/insights">
-            Back to Insights <span aria-hidden="true">→</span>
+            <span aria-hidden="true">←</span> Back to Insights
           </Link>
+
+          <header className="insight-meta">
+            <p className="insight-meta__eyebrow">Insight</p>
+            <div className="insight-meta__row">
+              {dateLabel ? <span>{dateLabel}</span> : null}
+              <span className="insight-meta__author">Admin</span>
+              {readingMinutes ? <span>{readingMinutes} min read</span> : null}
+            </div>
+          </header>
+
           {post.content ? (
             <div className="insight-body" dangerouslySetInnerHTML={{ __html: post.content }} />
           ) : (

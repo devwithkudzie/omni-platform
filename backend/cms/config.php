@@ -265,7 +265,7 @@ function require_capability(string $capability): void {
  */
 
 // Azure AD App Registration credentials and service account mailbox.
-define('TENANT_ID', cms_config_string('mail.tenant_id'));
-define('CLIENT_ID', cms_config_string('mail.client_id'));
-define('CLIENT_SECRET', cms_config_string('mail.client_secret'));
-define('SERVICE_ACCOUNT', cms_config_string('mail.service_account'));
+if (!defined('TENANT_ID')) { define('TENANT_ID', cms_config_string('mail.tenant_id')); }
+if (!defined('CLIENT_ID')) { define('CLIENT_ID', cms_config_string('mail.client_id')); }
+if (!defined('CLIENT_SECRET')) { define('CLIENT_SECRET', cms_config_string('mail.client_secret')); }
+if (!defined('SERVICE_ACCOUNT')) { define('SERVICE_ACCOUNT', cms_config_string('mail.service_account')); }

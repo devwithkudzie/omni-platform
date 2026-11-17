@@ -18,7 +18,7 @@ export default function SolutionOutcomes({
 
   return (
     <div className="outcome-board">
-      <SectionHead className="section-head--on-dark" eyebrow={eyebrow}>
+      <SectionHead eyebrow={eyebrow}>
         {heading}
       </SectionHead>
 

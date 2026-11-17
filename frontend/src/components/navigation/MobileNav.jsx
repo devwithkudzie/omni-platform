@@ -62,8 +62,8 @@ export default function MobileNav() {
   return (
     <header className="mobile-header">
       <div className="mobile-header__bar">
-        <Link href="/" aria-label="OmniContact home" onClick={closeNav}>
-          <img src="/logo.png" alt="OmniContact" width="92" height="36" />
+        <Link href="/" aria-label="Yamurai OmniContact home" onClick={closeNav}>
+          <img src="/logo-dark.png" alt="Yamurai OmniContact" width="132" height="36" />
         </Link>
         <button
           type="button"
@@ -82,7 +82,7 @@ export default function MobileNav() {
 
       <aside className={`mobile-drawer${navOpen ? ' is-open' : ''}`} aria-hidden={!navOpen}>
         <div className="mobile-drawer__head">
-          <img src="/logo.png" alt="OmniContact" width="92" height="36" />
+          <img src="/logo-dark.png" alt="Yamurai OmniContact" width="132" height="36" />
           <button type="button" className="mobile-drawer__close" onClick={closeNav} aria-label="Close menu">
             <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
               <path d="M6 6l12 12M18 6 6 18" />
@@ -91,6 +91,7 @@ export default function MobileNav() {
         </div>
 
         <nav className="mobile-drawer__nav" aria-label="Mobile navigation">
+          {renderLink({ label: 'Home', href: '/' }, 'mobile-link mobile-link--overview')}
           {navMenu.map((group) => {
             const key = `group:${group.label}`
             const open = !!openGroups[key]
@@ -106,7 +107,7 @@ export default function MobileNav() {
 
                 {open ? (
                   <div className="mobile-accordion__panel">
-                    {renderLink({ label: `${group.label} overview`, desc: group.tagline, href: group.overviewHref }, 'mobile-link mobile-link--overview')}
+                    {renderLink({ label: group.overviewLabel || `${group.label} overview`, desc: group.tagline, href: group.overviewHref }, 'mobile-link mobile-link--overview')}
                     {group.items.map((item) => {
                       if (!item.children?.length) return renderLink(item)
 
@@ -134,10 +135,10 @@ export default function MobileNav() {
           })}
 
           <button className="mobile-drawer__cta" type="button" onClick={openAssessment}>
-            Get a Free Operations Assessment
+            Request an Operations Assessment
           </button>
           <button className="mobile-drawer__cta" type="button" onClick={openDiscovery}>
-            Book a discovery call
+            Get a Free Consultation
           </button>
         </nav>
       </aside>

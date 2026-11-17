@@ -65,35 +65,41 @@ export default function InsightsIndex({ posts: initialPosts = [], error: initial
         title="Insights"
       />
 
-      <section className="solution-anchor solution-group solution-group--navy" id="articles">
+      <section className="solution-anchor sx-band sx-band--soft" id="articles">
         <div className="site-container">
-          <SectionHead className="section-head--on-dark" eyebrow="Latest thinking">
+          <SectionHead eyebrow="Latest thinking">
             Operational writing from the floor
           </SectionHead>
 
           {loading && (
-            <p className="insight-status">Loading insights...</p>
+            <p className="sx-status">Loading insights...</p>
           )}
 
           {!loading && error && (
-            <p className="insight-status insight-status--error">Unable to load insights right now.</p>
+            <p className="sx-status sx-status--error">Unable to load insights right now.</p>
           )}
 
           {!loading && !error && posts.length === 0 && (
-            <p className="insight-status">No insights have been published yet. Check back soon.</p>
+            <p className="sx-status">No insights have been published yet. Check back soon.</p>
           )}
 
           {!loading && !error && posts.length > 0 && (
-            <div className="reference-insights">
+            <div className="hx-insights__grid">
               {posts.map((post) => (
-                <Link className="reference-insight-card" href={`/insights/${post.slug}`} key={post.id || post.slug}>
-                  <img alt="" src={post.feature_image || '/home/associates.jpg'} />
-                  <div className="reference-insight-card__meta">
-                    <span>Insight</span>
-                    <span>{formatDate(post.created_at || post.scheduled_publish_at)}</span>
+                <Link className="hx-insight-card" href={`/insights/${post.slug}`} key={post.id || post.slug}>
+                  <div className="hx-insight-card__media">
+                    <img alt="" src={post.feature_image || '/home/associates.jpg'} />
                   </div>
-                  <h3>{post.title}</h3>
-                  {post.excerpt ? <p>{post.excerpt}</p> : null}
+                  <div className="hx-insight-card__body">
+                    <p className="hx-insight-card__category">
+                      Insight · {formatDate(post.created_at || post.scheduled_publish_at)}
+                    </p>
+                    <h3>{post.title}</h3>
+                    {post.excerpt ? <p className="hx-insight-card__excerpt">{post.excerpt}</p> : null}
+                    <span className="hx-link">
+                      Read more <span aria-hidden="true">→</span>
+                    </span>
+                  </div>
                 </Link>
               ))}
             </div>

@@ -1,5 +1,7 @@
 import SiteShell from '@/components/layout/SiteShell'
 import AssessmentModalButton from '@/components/assessment/AssessmentModalButton'
+import SectionHead from '@/components/layout/SectionHead'
+import SolutionHero from '@/features/solutions/components/SolutionHero'
 import { ASSESSMENT_COPY } from '@/config/assessment'
 
 const outcomes = [
@@ -52,30 +54,26 @@ export default function AssessmentLandingPage() {
   return (
     <SiteShell>
       <main>
-        <section
-          className="page-hero"
-          style={{ '--page-hero-image': 'url("/home/operational%20efficienct.jpeg")' }}
-          aria-labelledby="assessment-title"
+        <SolutionHero
+          eyebrow="Free for operations leaders"
+          image="/home/operational efficienct.jpeg"
+          subtitle={ASSESSMENT_COPY.tagline}
+          title={ASSESSMENT_COPY.productName}
         >
-          <div className="site-container">
-            <p className="page-hero__eyebrow">Free for operations leaders</p>
-            <h1 id="assessment-title">{ASSESSMENT_COPY.productName}</h1>
-            <p>{ASSESSMENT_COPY.tagline}</p>
-            <div className="assessment-page__ctas">
-              <AssessmentModalButton className="btn-prim" context={{ title: ASSESSMENT_COPY.productName }}>
-                {ASSESSMENT_COPY.ctaLong} →
-              </AssessmentModalButton>
-            </div>
-          </div>
-        </section>
+          <AssessmentModalButton className="hx-btn hx-btn--primary" context={{ title: ASSESSMENT_COPY.productName }}>
+            {ASSESSMENT_COPY.ctaLong} <span aria-hidden="true">→</span>
+          </AssessmentModalButton>
+          <AssessmentModalButton className="hx-btn hx-btn--outline" step="meeting">
+            Book a Discovery Call
+          </AssessmentModalButton>
+        </SolutionHero>
 
-        <section className="page-section page-section--soft">
+        <section className="sx-band sx-band--soft">
           <div className="site-container">
-            <p className="page-hero__eyebrow">What it covers</p>
-            <h2>Five operating questions. A practical snapshot.</h2>
-            <div className="assessment-page__grid">
+            <SectionHead eyebrow="What it covers">Five operating questions. A practical snapshot.</SectionHead>
+            <div className="sx-cards sx-cards--five">
               {outcomes.map((item) => (
-                <article className="assessment-page__card" key={item.title}>
+                <article className="sx-card" key={item.title}>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
                 </article>
@@ -84,27 +82,30 @@ export default function AssessmentLandingPage() {
           </div>
         </section>
 
-        <section className="page-cta">
+        <section className="sx-band">
           <div className="site-container">
-            <p className="page-hero__eyebrow">How it works</p>
-            <h2>Stay on the site. Email is only the backup.</h2>
-            <div className="assessment-page__grid">
+            <SectionHead eyebrow="How it works">Stay on the site. Email is only the backup.</SectionHead>
+            <ol className="sx-path__rail sx-path__rail--three">
               {steps.map((item) => (
-                <article className="assessment-page__card" key={item.num}>
-                  <span>{item.num}</span>
+                <li className="sx-path__step" key={item.num}>
+                  <span className="sx-path__node" aria-hidden="true">{item.num}</span>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
-                </article>
+                </li>
               ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="sx-banner">
+          <div className="site-container sx-banner__inner">
+            <div>
+              <h2>Ready to see where your operation stands?</h2>
+              <p>About three minutes. Your snapshot appears on screen straight away.</p>
             </div>
-            <div className="assessment-page__ctas">
-              <AssessmentModalButton className="btn-prim" context={{ title: ASSESSMENT_COPY.productName }}>
-                {ASSESSMENT_COPY.ctaLong} →
-              </AssessmentModalButton>
-              <AssessmentModalButton className="btn-prim assessment-page__ghost" step="meeting">
-                Book a discovery call →
-              </AssessmentModalButton>
-            </div>
+            <AssessmentModalButton className="hx-btn hx-btn--primary" context={{ title: ASSESSMENT_COPY.productName }}>
+              {ASSESSMENT_COPY.ctaLong} <span aria-hidden="true">→</span>
+            </AssessmentModalButton>
           </div>
         </section>
       </main>

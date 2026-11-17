@@ -9,7 +9,7 @@ const industryPagesRaw = {
   education: {
     title: 'Education Services',
     subtitle: 'Secure delivery for modern assessments and learner journeys.',
-    image: '/home/industries/education.jpg',
+    image: '/home/visuals/education.png',
     icon: industryIcons.education,
     seoDescription:
       'Secure online assessment operations, learner support, and digital academic services for schools, universities, and certification bodies.',
@@ -56,7 +56,7 @@ const industryPagesRaw = {
   health: {
     title: 'Health Services',
     subtitle: 'Operational excellence for safer, smoother patient care journeys.',
-    image: '/home/industries/medical.jpg',
+    image: '/home/visuals/healthcare.png',
     icon: industryIcons.health,
     seoDescription:
       'Healthcare support services covering patient access, clinical administration, telehealth operations, revenue support, and compliant data handling.',
@@ -103,7 +103,7 @@ const industryPagesRaw = {
   'financial-services': {
     title: 'Financial Services',
     subtitle: 'Secure, compliant operations for modern financial institutions.',
-    image: '/home/industries/banking.jpg',
+    image: '/home/visuals/financial-services.png',
     icon: industryIcons['financial-services'],
     seoDescription:
       'Operational support for financial institutions across customer care, back-office processing, risk controls, compliance workflows, and performance analytics.',
@@ -356,7 +356,7 @@ const industrySecondaryImages = {
   health: '/home/contact-center.jpg',
   'financial-services': '/home/industries/insurance.jpg',
   insurance: '/home/industries/banking.jpg',
-  technology: '/home/omni-em.png',
+  technology: '/home/omni-em.jpeg',
   'retail-ecommerce': '/home/associates.jpg',
   'travel-hospitality': '/home/contact-center.jpg',
 }

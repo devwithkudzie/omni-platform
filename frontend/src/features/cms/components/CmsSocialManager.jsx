@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CmsShell from './CmsShell'
+import CmsPendingAuth from './CmsPendingAuth'
 import { checkSocialNames, fetchCurrentAdmin, fetchSocialDashboard } from '../services/cmsApi'
 
 const platforms = [
@@ -97,13 +98,7 @@ export default function CmsSocialManager() {
   }
 
   if (loading) {
-    return (
-      <CmsShell title="Social" subtitle="Loading social media engagement...">
-        <div className="border border-slate-200 bg-white p-8 text-sm font-bold text-slate-600 shadow-sm">
-          Loading social dashboard...
-        </div>
-      </CmsShell>
-    )
+    return <CmsPendingAuth label="Loading social dashboard…" />
   }
 
   return (

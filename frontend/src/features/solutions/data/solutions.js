@@ -57,7 +57,7 @@ const categoryFaqs = {
 
 const categoryAssessmentContext = {
   'ai-technology-solutions': {
-    category: 'AI & Technology Solutions',
+    category: 'AI & Digital Solutions',
     title: 'AI Readiness Assessment',
     cta: 'Discover My AI Readiness',
     objective: 'Introduce AI into the Business',
@@ -93,6 +93,7 @@ const serviceAssessmentNames = {
   'software-development': 'Digital Solution Discovery Assessment',
   'staff-augmentation': 'Technology Team Capacity Assessment',
   'data-annotation-labelling': 'AI Data Readiness Assessment',
+  'marketing-as-a-service': 'Digital Marketing Health Check',
   'contact-centre-services': 'Customer Service Performance Assessment',
   'contact-centre-quality-analytics': 'Quality Management Assessment',
   'customer-support-services': 'Customer Support Readiness Assessment',
@@ -111,13 +112,23 @@ const serviceAssessmentNames = {
   arams: 'School Operations Assessment',
 }
 
+/** Root-level short URLs for service pages. Avoid reserved site paths. */
+const shortSlugOverrides = {
+  // `/impact-sourcing` already redirects to the About page.
+  'impact-sourcing': 'impact-sourcing-services',
+}
+
+export function solutionServicePath(slug) {
+  return `/${shortSlugOverrides[slug] || slug}`
+}
+
 export const solutionCategoryPages = {
   'ai-technology-solutions': {
-    title: 'AI & Technology Solutions',
-    subtitle: 'Practical automation, software delivery, and data services for modern customer operations.',
+    title: 'AI & Digital Solutions',
+    subtitle: 'Practical automation, software delivery, specialist talent, and data services for modern customer operations.',
     eyebrow: 'Solutions',
-    image: '/landing_pages/ai-operations.jpg',
-    secondaryImage: '/home/omni-em.png',
+    image: '/home/visuals/ai-globe.png',
+    secondaryImage: '/home/omni-em.jpeg',
     illustration: '/illustrations/ai-technology.svg',
     assessmentGoal: 'introduce_ai',
     assessmentContext: categoryAssessmentContext['ai-technology-solutions'],
@@ -131,17 +142,17 @@ export const solutionCategoryPages = {
     engagement: sharedEngagement,
     faqs: categoryFaqs['ai-technology-solutions'],
     seoDescription:
-      'AI and technology solutions for conversational AI, custom software, staff augmentation, data annotation, and digital operations.',
+      'AI and digital solutions for conversational AI, custom software, staff augmentation, data annotation, and digital operations.',
     intro: {
       heading: 'Turn Digital Ambition Into Operational Results',
       body:
-        'We apply chatbots, workflow software, and data labelling where they cut handle time or error rates. Delivery includes the team that runs the process, the integration work, and the weekly metrics that prove it is working.',
+        'We apply chatbots, workflow software, specialist talent, and data labelling where they cut handle time, speed up delivery, or reduce error rates. Delivery includes the team that runs the process, the integration work, and the weekly metrics that prove it is working.',
     },
     capabilities: [
-      ['Conversational AI & Chatbot Solutions', 'Customer service chatbots, virtual assistants, knowledge assistants, and automated support workflows.', '/solutions/ai-technology-solutions/conversational-ai-chatbots'],
-      ['Software Development', 'Custom applications, workflow tools, portals, APIs, and integrations built around real operational needs.', '/solutions/ai-technology-solutions/software-development'],
-      ['Staff Augmentation', 'Specialist technology and AI talent to extend delivery teams and accelerate implementation.', '/solutions/ai-technology-solutions/staff-augmentation'],
-      ['Data Annotation & Labelling', 'Human-reviewed image, text, audio, and video annotation for AI training and quality workflows.', '/solutions/ai-technology-solutions/data-annotation-labelling'],
+      ['Conversational AI & Chatbot Solutions', 'Customer service chatbots, virtual assistants, knowledge assistants, and automated support workflows.', solutionServicePath('conversational-ai-chatbots')],
+      ['Software Development', 'Custom applications, workflow tools, portals, APIs, and integrations built around real operational needs.', solutionServicePath('software-development')],
+      ['Staff Augmentation', 'Specialist technology and AI talent to extend delivery teams and accelerate implementation.', solutionServicePath('staff-augmentation')],
+      ['Data Annotation & Labelling', 'Human-reviewed image, text, audio, and video annotation for AI training and quality workflows.', solutionServicePath('data-annotation-labelling')],
     ],
     outcomes: [
       ['Reduce repetitive service workload', 'Move FAQ, routing, and status questions into assisted automation so agents handle exceptions.'],
@@ -162,10 +173,10 @@ export const solutionCategoryPages = {
   },
   'customer-experience-solutions': {
     title: 'Customer Experience Solutions',
-    subtitle: 'Omnichannel support, contact centre operations, quality analytics, and customer care delivery.',
+    subtitle: 'Omnichannel support, contact centre operations, quality analytics, customer care, and outsourced marketing.',
     eyebrow: 'Solutions',
-    image: '/landing_pages/customer-experience.jpg',
-    secondaryImage: '/home/contact-center.jpg',
+    image: '/home/visuals/hero-1.png',
+    secondaryImage: '/home/visuals/bpo-service.png',
     illustration: '/illustrations/customer-experience.svg',
     assessmentGoal: 'improve_customer_experience',
     assessmentContext: categoryAssessmentContext['customer-experience-solutions'],
@@ -179,17 +190,18 @@ export const solutionCategoryPages = {
     engagement: sharedEngagement,
     faqs: categoryFaqs['customer-experience-solutions'],
     seoDescription:
-      'Customer experience solutions covering contact centre services, customer support, omnichannel engagement, quality assurance, and analytics.',
+      'Customer experience solutions covering contact centre services, customer support, omnichannel engagement, quality assurance, analytics, and Marketing as a Service.',
     intro: {
       heading: 'Deliver Faster, More Consistent Customer Support',
       body:
         'We run inbound and outbound support across voice, live chat, WhatsApp, email, and social. Teams work to your first-response and resolution SLAs, with QA sampling, coaching, and weekly reporting into the tools you already use.',
     },
     capabilities: [
-      ['Contact Centre Services', 'Inbound and outbound contact centre operations aligned to service levels and customer needs.', '/solutions/customer-experience-solutions/contact-centre-services'],
-      ['Contact Centre Quality & Analytics', 'QA routines, performance analytics, compliance monitoring, and improvement reporting.', '/solutions/customer-experience-solutions/contact-centre-quality-analytics'],
-      ['Customer Support Services', 'Customer care, help desk, complaint resolution, and technical assistance across channels.', '/solutions/customer-experience-solutions/customer-support-services'],
-      ['Omnichannel Customer Engagement', 'Live chat, WhatsApp, social, email, voice, and digital support models.', '/solutions/customer-experience-solutions/omnichannel-engagement'],
+      ['Contact Centre Services', 'Inbound and outbound contact centre operations aligned to service levels and customer needs.', solutionServicePath('contact-centre-services')],
+      ['Contact Centre Quality & Analytics', 'QA routines, performance analytics, compliance monitoring, and improvement reporting.', solutionServicePath('contact-centre-quality-analytics')],
+      ['Customer Support Services', 'Customer care, help desk, complaint resolution, and technical assistance across channels.', solutionServicePath('customer-support-services')],
+      ['Omnichannel Customer Engagement', 'Live chat, WhatsApp, social, email, voice, and digital support models.', solutionServicePath('omnichannel-engagement')],
+      ['Marketing as a Service (MaaS)', 'Strategy, creative, digital campaigns, CRM automation and reporting in one flexible managed marketing team.', solutionServicePath('marketing-as-a-service')],
     ],
     outcomes: [
       ['Improve first-response and resolution times', 'Staffing, routing, and scripts are built around the SLAs you already publish to customers.'],
@@ -212,7 +224,7 @@ export const solutionCategoryPages = {
     title: 'Business Process Outsourcing',
     subtitle: 'Scalable back-office, claims, healthcare administration, and impact sourcing delivery.',
     eyebrow: 'Solutions',
-    image: '/home/associates.jpg',
+    image: '/home/visuals/bpo-service.png',
     secondaryImage: '/home/agent1.png',
     illustration: '/illustrations/business-process.svg',
     assessmentGoal: 'improve_operational_efficiency',
@@ -234,10 +246,10 @@ export const solutionCategoryPages = {
         'OmniContact supports high-volume, rules-based workflows with trained teams, quality controls, reporting discipline, and flexible delivery capacity.',
     },
     capabilities: [
-      ['Back Office Processing', 'Document processing, data entry, records administration, verification, and workflow support.', '/solutions/business-process-outsourcing/back-office-processing'],
-      ['Healthcare Administration Support', 'Patient administration, scheduling, records support, and healthcare operations assistance.', '/solutions/business-process-outsourcing/healthcare-administration'],
-      ['Claims Processing Support', 'Claims intake, document checks, data validation, case support, and follow-through.', '/solutions/business-process-outsourcing/claims-processing'],
-      ['Impact Sourcing', 'Inclusive outsourcing delivery that creates career pathways and measurable social value.', '/solutions/business-process-outsourcing/impact-sourcing'],
+      ['Back Office Processing', 'Document processing, data entry, records administration, verification, and workflow support.', solutionServicePath('back-office-processing')],
+      ['Healthcare Administration Support', 'Patient administration, scheduling, records support, and healthcare operations assistance.', solutionServicePath('healthcare-administration')],
+      ['Claims Processing Support', 'Claims intake, document checks, data validation, case support, and follow-through.', solutionServicePath('claims-processing')],
+      ['Impact Sourcing', 'Inclusive outsourcing delivery that creates career pathways and measurable social value.', solutionServicePath('impact-sourcing')],
     ],
     outcomes: [
       ['Increase operational throughput', 'Trained teams process the queue to agreed daily and weekly volume bands.'],
@@ -282,10 +294,10 @@ export const solutionCategoryPages = {
         'We support certification bodies, institutions, employers, and workforce programs with structured testing operations, candidate support, proctoring, and assessment delivery.',
     },
     capabilities: [
-      ['Professional Testing', 'General certification and testing services with candidate administration and secure delivery workflows.', '/solutions/assessment-certification-services/professional-testing'],
-      ['Pearson VUE Testing', 'Vendor-specific certification exam delivery support for professional credential programs.', '/solutions/assessment-certification-services/pearson-vue-testing'],
-      ['Online Proctoring', 'Remote examination delivery with identity checks, monitoring workflows, and incident handling.', '/solutions/assessment-certification-services/online-proctoring'],
-      ['Skills Assessments', 'Recruitment and workforce evaluation support for hiring, placement, and capability measurement.', '/solutions/assessment-certification-services/skills-assessments'],
+      ['Professional Testing', 'General certification and testing services with candidate administration and secure delivery workflows.', solutionServicePath('professional-testing')],
+      ['Pearson VUE Testing', 'Vendor-specific certification exam delivery support for professional credential programs.', solutionServicePath('pearson-vue-testing')],
+      ['Online Proctoring', 'Remote examination delivery with identity checks, monitoring workflows, and incident handling.', solutionServicePath('online-proctoring')],
+      ['Skills Assessments', 'Recruitment and workforce evaluation support for hiring, placement, and capability measurement.', solutionServicePath('skills-assessments')],
     ],
     outcomes: [
       ['Protect assessment integrity', 'Identity checks, monitoring, and documented incidents aligned to the exam owner’s rules.'],
@@ -308,7 +320,7 @@ export const solutionCategoryPages = {
     title: 'Enterprise Platforms',
     subtitle: 'Operational systems for QA, recruitment, asset management, analytics, and workflow visibility.',
     eyebrow: 'Solutions',
-    image: '/home/omni-em.png',
+    image: '/home/omni-em.jpeg',
     secondaryImage: '/home/associates.jpg',
     illustration: '/illustrations/enterprise-platforms.svg',
     assessmentGoal: 'improve_decision_reporting',
@@ -330,10 +342,10 @@ export const solutionCategoryPages = {
         'Our enterprise platforms help teams manage workflows, assets, recruitment, quality, and reporting with clearer accountability and better decision support.',
     },
     capabilities: [
-      ['QA Toolbox', 'AI-powered quality assurance and performance insights for contact centre and customer operations.', '/solutions/enterprise-platforms/qa-toolbox'],
-      ['Asset Management System', 'Enterprise asset visibility, lifecycle control, maintenance history, and audit reporting.', '/solutions/enterprise-platforms/asset-management-system'],
-      ['Recruitment Management System', 'End-to-end hiring workflow management, candidate tracking, screening, and analytics.', '/solutions/enterprise-platforms/recruitment-management-system'],
-      ['School Management & Administration Platform', 'Academic records, fee management, parent communication, teacher administration, and school reporting in one connected platform.', '/solutions/enterprise-platforms/arams'],
+      ['QA Toolbox', 'AI-powered quality assurance and performance insights for contact centre and customer operations.', solutionServicePath('qa-toolbox')],
+      ['Asset Management System', 'Enterprise asset visibility, lifecycle control, maintenance history, and audit reporting.', solutionServicePath('asset-management-system')],
+      ['Recruitment Management System', 'End-to-end hiring workflow management, candidate tracking, screening, and analytics.', solutionServicePath('recruitment-management-system')],
+      ['ARAMS', 'School management software for academics, fees, records, attendance, and parent communication in one platform.', solutionServicePath('arams')],
     ],
     outcomes: [
       ['Improve workflow visibility', 'See work in motion, owners, and ageing items without a spreadsheet chase.'],
@@ -379,11 +391,14 @@ function normalizeFocus(focusAreas = []) {
 
 const child = (categorySlug, slug, title, subtitle, focusAreas) => {
   const category = solutionCategoryPages[categorySlug]
+  const shortSlug = shortSlugOverrides[slug] || slug
 
   return {
     categorySlug,
     slug,
-    href: `/solutions/${categorySlug}/${slug}`,
+    shortSlug,
+    href: solutionServicePath(slug),
+    legacyHref: `/solutions/${categorySlug}/${slug}`,
     parentHref: `/solutions/${categorySlug}`,
     parentTitle: category.title,
     title,
@@ -423,11 +438,11 @@ const aramsPage = {
   ...child(
     'enterprise-platforms',
     'arams',
-    'School Management & Administration Platform',
+    'ARAMS',
     'Bring academics, finance, student records, communication, and administration together in one secure platform for modern schools.',
     ['Academic records and report cards', 'Fee management and reconciliation', 'Parent communication and notifications', 'Teacher administration and class management', 'School reporting, governance, and audit visibility'],
   ),
-  image: '/home/industries/education.jpg',
+  image: '/home/visuals/arams-service.png',
   seoDescription:
     'School management and administration platform for academic records, fee management, parent communication, teacher administration, reporting, and governance.',
   intro: {
@@ -445,7 +460,7 @@ const aramsPage = {
   ],
   assessmentContext: {
     ...categoryAssessmentContext['enterprise-platforms'],
-    service: 'School Management & Administration Platform',
+    service: 'ARAMS',
     title: 'School Operations Assessment',
     cta: 'Start Your School Operations Assessment',
     objective: 'Modernize School Administration',
@@ -509,6 +524,13 @@ export const solutionChildPages = {
       ['Unified customer handoffs', 'The next agent sees the thread, not a blank ticket and a frustrated customer.'],
       ['Social and messaging operations', 'Public replies and private threads handled to the same quality scorecard as the contact centre.'],
       ['Channel performance reporting', 'Volume, first-response, and quality by channel every week, so you can see where demand is moving.'],
+    ]),
+    'marketing-as-a-service': child('customer-experience-solutions', 'marketing-as-a-service', 'Marketing as a Service (MaaS)', 'Get the strategy, creative talent, digital campaigns and lead management expertise you need to turn marketing investment into measurable growth.', [
+      ['Strategy & Planning', 'A clear growth plan built around your market, customers and commercial goals.'],
+      ['Content & Creative', 'Social content, graphic design, video and campaign copy that keep your brand consistent.'],
+      ['Digital Campaigns', 'Targeted social, PPC, email and SEO campaigns designed to generate enquiries.'],
+      ['CRM & Marketing Automation', 'Lead capture, nurturing and CRM workflows that connect marketing to sales follow-up.'],
+      ['Analytics & Optimisation', 'Dashboards, conversion tracking and monthly reviews that make every investment count.'],
     ]),
   },
   'business-process-outsourcing': {
@@ -590,6 +612,18 @@ export const solutionChildParams = Object.entries(solutionChildPages).flatMap(([
   Object.keys(pages).map((slug) => ({ category, slug })),
 )
 
+export const solutionChildList = Object.values(solutionChildPages).flatMap((pages) => Object.values(pages))
+
+export const solutionShortSlugs = solutionChildList.map((page) => page.shortSlug)
+
 export function getSolutionChildPage(categorySlug, childSlug) {
   return solutionChildPages[categorySlug]?.[childSlug] || null
+}
+
+export function getSolutionChildByShortSlug(shortSlug) {
+  return solutionChildList.find((page) => page.shortSlug === shortSlug) || null
+}
+
+export function getLegacySolutionRedirects() {
+  return Object.fromEntries(solutionChildList.map((page) => [page.legacyHref.replace(/^\//, ''), page.href]))
 }

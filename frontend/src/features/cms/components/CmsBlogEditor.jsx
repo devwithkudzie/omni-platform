@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CmsShell from './CmsShell'
+import CmsPendingAuth from './CmsPendingAuth'
 import {
   createAdminBlog,
   fetchAdminBlogs,
@@ -144,13 +145,7 @@ export default function CmsBlogEditor({ postId }) {
   }
 
   if (loading) {
-    return (
-      <CmsShell title={isEditing ? 'Edit post' : 'New post'} subtitle="Loading editor...">
-        <div className="border border-slate-200 bg-white p-8 text-sm font-bold text-slate-600 shadow-sm">
-          Loading editor...
-        </div>
-      </CmsShell>
-    )
+    return <CmsPendingAuth label="Loading editor…" />
   }
 
   return (

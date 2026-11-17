@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import SectionHead from '@/components/layout/SectionHead'
 
 const tourTabs = [
   {
@@ -75,16 +74,14 @@ export default function AramsPlatformTour() {
   const current = tourTabs.find((tab) => tab.id === activeTab) || tourTabs[0]
 
   return (
-    <section className="product-tour">
+    <section className="product-tour ms-section">
       <div className="site-container">
         <div className="product-tour__intro">
-          <SectionHead
-            className="section-head--on-dark"
-            copy="Switch between the views school teams actually use — administration, records, fees, and parent communication."
-            eyebrow="Platform"
-          >
-            Explore how ARAMS works
-          </SectionHead>
+          <p className="ms-eyebrow">See it in action</p>
+          <h2>See ARAMS in Action</h2>
+          <p className="ms-section__intro">
+            Switch between the views your teams will use every day: administration, academic records, fees and the parent portal.
+          </p>
         </div>
         <div className="product-tour__layout">
           <div className="product-tour__tabs">
@@ -95,7 +92,6 @@ export default function AramsPlatformTour() {
                 onClick={() => setActiveTab(tab.id)}
                 type="button"
               >
-                <span className="outcome-card__bar" aria-hidden="true" />
                 {tab.label}
               </button>
             ))}

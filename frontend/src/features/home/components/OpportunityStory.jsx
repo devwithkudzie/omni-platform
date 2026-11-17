@@ -10,7 +10,7 @@ const outcomes = [
     headline: 'Turn more customer interactions into growth.',
     text:
       'Strengthen acquisition, conversion and retention by improving how your business attracts, serves and understands customers.',
-    images: ['/home/industries/digital.jpg'],
+    images: ['/home/visuals/maas-service.png'],
     links: [
       ['Reach and support more customers across every channel', '/solutions/customer-experience-solutions/omnichannel-engagement'],
       ['Turn customer interactions into stronger loyalty', '/solutions/customer-experience-solutions'],
@@ -23,7 +23,7 @@ const outcomes = [
     headline: 'Make your operations work smarter.',
     text:
       'Remove bottlenecks, simplify repetitive work and improve operational performance across your business.',
-    images: ['/home/operational efficienct.jpeg'],
+    images: ['/home/visuals/bpo-service.png'],
     links: [
       ['Move repetitive processes into reliable managed operations', '/solutions/business-process-outsourcing'],
       ['Automate high-volume workflows with confidence', '/solutions/ai-technology-solutions/software-development'],
@@ -36,7 +36,7 @@ const outcomes = [
     headline: 'Create experiences customers remember.',
     text:
       'Deliver faster, more consistent and more human customer experiences across every touchpoint.',
-    images: ['/landing_pages/customer-experience.jpg'],
+    images: ['/home/visuals/hero-1.png'],
     links: [
       ['Deliver responsive customer support across every channel', '/solutions/customer-experience-solutions/customer-support-services'],
       ['Improve service quality through continuous assurance', '/solutions/customer-experience-solutions/contact-centre-quality-analytics'],
@@ -49,7 +49,7 @@ const outcomes = [
     headline: 'Move from AI curiosity to measurable impact.',
     text:
       'Identify practical AI opportunities that improve service delivery, operations and decision making.',
-    images: ['/landing_pages/ai-operations.jpg'],
+    images: ['/home/visuals/ai-globe.png'],
     links: [
       ['Equip teams with intelligent AI assistance', '/solutions/ai-technology-solutions/conversational-ai-chatbots'],
       ['Automate repetitive customer and operational workflows', '/solutions/ai-technology-solutions/software-development'],
@@ -75,7 +75,7 @@ const outcomes = [
     headline: 'Turn operational information into confident decisions.',
     text:
       'Bring together customer, workforce and operational insights to help leaders act sooner.',
-    images: ['/home/omni-em.png'],
+    images: ['/home/omni-em.jpeg'],
     links: [
       ['Visualise operational performance in real time', '/solutions/enterprise-platforms/qa-toolbox'],
       ['Identify trends before they become problems', '/solutions/customer-experience-solutions/contact-centre-quality-analytics'],

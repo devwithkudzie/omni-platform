@@ -11,11 +11,11 @@ export default function FacilityTour({ tour }) {
   return (
     <section
       aria-labelledby="facility-tour-heading"
-      className="solution-anchor solution-group solution-group--dark"
+      className="solution-anchor sx-band"
       id="tour"
     >
       <div className="site-container">
-        <SectionHead className="section-head--on-dark" copy={tour.body} eyebrow={tour.eyebrow}>
+        <SectionHead copy={tour.body} eyebrow={tour.eyebrow}>
           <span id="facility-tour-heading">{tour.heading}</span>
         </SectionHead>
 

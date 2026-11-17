@@ -3,13 +3,26 @@ import SiteShell from '@/components/layout/SiteShell'
 import { getIndustryPage } from '@/features/industries/data/industries'
 import PublicPage from '@/features/public-pages/components/PublicPage'
 import { getAllPublicSlugs, getPublicPage } from '@/features/public-pages/data/pages'
+import SolutionChildPage from '@/features/solutions/components/SolutionChildPage'
+import {
+  getLegacySolutionRedirects,
+  getSolutionChildByShortSlug,
+  solutionShortSlugs,
+} from '@/features/solutions/data/solutions'
+import { customSeo } from '@/features/landing/custom'
 
 export function generateStaticParams() {
-  return getAllPublicSlugs()
+  const publicSlugs = getAllPublicSlugs()
     .filter((slug) => slug !== 'solutions' && !slug.startsWith('solutions/'))
     .map((slug) => ({
       slug: slug.split('/'),
     }))
+
+  const shortServiceSlugs = solutionShortSlugs.map((slug) => ({
+    slug: [slug],
+  }))
+
+  return [...publicSlugs, ...shortServiceSlugs]
 }
 
 export async function generateMetadata({ params }) {
@@ -20,6 +33,7 @@ export async function generateMetadata({ params }) {
     'customer-experience-solutions': '/solutions/customer-experience-solutions',
     'business-process-outsourcing': '/solutions/business-process-outsourcing',
     'test-center': '/solutions/assessment-certification-services',
+    ...getLegacySolutionRedirects(),
   }
   const legacyAboutRedirects = {
     'community-engagement': '/about/community-impact',
@@ -80,7 +94,19 @@ export async function generateMetadata({ params }) {
     }
   }
 
-  const page = industryPage || getPublicPage(resolvedParams.slug)
+  const servicePage = getSolutionChildByShortSlug(slug)
+  if (servicePage) {
+    const seo = customSeo[servicePage.slug]
+    return {
+      title: seo?.title || `${servicePage.title} | OmniContact`,
+      description: seo?.description || servicePage.seoDescription || servicePage.subtitle || servicePage.intro?.body,
+      alternates: {
+        canonical: servicePage.href,
+      },
+    }
+  }
+
+  const page = getPublicPage(resolvedParams.slug)
   if (!page) return {}
 
   return {
@@ -97,6 +123,7 @@ export default async function Page({ params }) {
     'customer-experience-solutions': '/solutions/customer-experience-solutions',
     'business-process-outsourcing': '/solutions/business-process-outsourcing',
     'test-center': '/solutions/assessment-certification-services',
+    ...getLegacySolutionRedirects(),
   }
   const legacyAboutRedirects = {
     'community-engagement': '/about/community-impact',
@@ -115,6 +142,17 @@ export default async function Page({ params }) {
 
   const industryPage = getIndustryPage(slug)
   if (industryPage) redirect(`/industries/${slug}`)
+
+  const servicePage = getSolutionChildByShortSlug(slug)
+  if (servicePage) {
+    return (
+      <SiteShell>
+        <main>
+          <SolutionChildPage page={servicePage} />
+        </main>
+      </SiteShell>
+    )
+  }
 
   const page = getPublicPage(resolvedParams.slug)
   if (!page) notFound()

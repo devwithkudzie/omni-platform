@@ -4,6 +4,8 @@ namespace OmniContact\Controllers;
 
 use OmniContact\Http\Request;
 use OmniContact\Http\Response;
+use OmniContact\Support\MarketingHealthCheck;
+use OmniContact\Support\ZohoCrm;
 
 final class ContactController
 {
@@ -28,13 +30,44 @@ final class ContactController
             return;
         }
 
+        $isAssessment = str_contains(strtolower($source), 'assessment')
+            || str_contains(strtolower($source), 'health check')
+            || isset($payload['assessmentTitle']);
+        $isMarketingHealth = MarketingHealthCheck::isHealthCheck($payload);
+        $healthScore = null;
+
+        // Authoritative scoring happens on the server before any mail/CRM side effects.
+        if ($isMarketingHealth) {
+            try {
+                $healthScore = MarketingHealthCheck::scorePayload($payload);
+            } catch (\InvalidArgumentException $error) {
+                Response::error('VALIDATION_ERROR', $error->getMessage(), 400);
+                return;
+            }
+
+            $payload['snapshot'] = [
+                'ooi' => $healthScore['overallScore'],
+                'level' => $healthScore['category'],
+                'summary' => $healthScore['categoryMessage'],
+                'band' => $healthScore['categoryMessage'],
+                'dimensionScores' => $healthScore['pillarScores'],
+            ];
+            $payload['weakestAreas'] = $healthScore['weakest'];
+            $payload['leadSourceTag'] = 'MaaS';
+            if (trim((string)($payload['source'] ?? '')) === '') {
+                $payload['source'] = 'MaaS Digital Marketing Health Check';
+            }
+        }
+
         $mailConfig = is_array($config['mail'] ?? null) ? $config['mail'] : [];
         $tenantId = trim((string)($mailConfig['tenant_id'] ?? ''));
         $clientId = trim((string)($mailConfig['client_id'] ?? ''));
         $clientSecret = trim((string)($mailConfig['client_secret'] ?? ''));
         $serviceAccount = trim((string)($mailConfig['service_account'] ?? ''));
+        $mailConfigured = $tenantId !== '' && $clientId !== '' && $clientSecret !== '' && $serviceAccount !== '';
 
-        if ($tenantId === '' || $clientId === '' || $clientSecret === '' || $serviceAccount === '') {
+        // Health-check scoring can succeed without mail. Other contact forms still require mail.
+        if (!$mailConfigured && !$isMarketingHealth) {
             Response::error('MAIL_CONFIG_MISSING', 'Contact mail service is not configured.', 500);
             return;
         }
@@ -45,12 +78,16 @@ final class ContactController
         $toAddress = trim((string)($contactConfig[$region === 'za' ? 'to_za' : 'to_zw'] ?? '')) ?: $defaultToAddress;
         $ccAddresses = self::mailRecipients((string)($contactConfig['cc'] ?? ''));
         $safe = static fn (string $value): string => htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-        $isAssessment = str_contains(strtolower($source), 'assessment') || isset($payload['assessmentTitle']);
 
         if ($isAssessment) {
             $leadId = sprintf('OC-%s-%06d', date('Y'), random_int(0, 999999));
             $lowestDimension = self::lowestDimensionLabel($payload);
-            $subject = "New Assessment | {$lowestDimension} | " . ($name !== '' ? $name : $email);
+            if ($isMarketingHealth) {
+                $scoreLabel = (string)($healthScore['overallScore'] ?? 'N/A');
+                $subject = "New MaaS Health Check | {$scoreLabel}/100 | " . ($name !== '' ? $name : $email);
+            } else {
+                $subject = "New Assessment | {$lowestDimension} | " . ($name !== '' ? $name : $email);
+            }
             $body = self::buildAssessmentBrief($payload, $leadId, $regionLabel, $safe);
         } else {
             $subject = "OmniContact Website - New Enquiry ({$regionLabel})";
@@ -72,65 +109,108 @@ final class ContactController
         ";
         }
 
-        $token = self::getGraphToken($tenantId, $clientId, $clientSecret);
-        if (!$token) {
-            Response::error('MAIL_TOKEN_FAILED', 'Failed to acquire Graph token.', 500);
-            return;
-        }
+        $emailSent = false;
+        $prospectEmailSent = null;
+        $zohoResult = null;
+        $mailError = null;
 
-        $mailPayload = [
-            'message' => [
-                'subject' => $subject,
-                'body' => [
-                    'contentType' => 'HTML',
-                    'content' => $body,
-                ],
-                'from' => [
-                    'emailAddress' => ['address' => $serviceAccount],
-                ],
-                'toRecipients' => [
-                    ['emailAddress' => ['address' => $toAddress]],
-                ],
-                'ccRecipients' => array_map(
-                    static fn (string $address): array => ['emailAddress' => ['address' => $address]],
-                    $ccAddresses
-                ),
-                'replyTo' => [
-                    ['emailAddress' => [
-                        'address' => $email,
-                        'name' => $name,
-                    ]],
-                ],
-            ],
-            'saveToSentItems' => true,
-        ];
+        if ($mailConfigured) {
+            $token = self::getGraphToken($tenantId, $clientId, $clientSecret);
+            if (!$token) {
+                if (!$isMarketingHealth) {
+                    Response::error('MAIL_TOKEN_FAILED', 'Failed to acquire Graph token.', 500);
+                    return;
+                }
+                $mailError = 'MAIL_TOKEN_FAILED';
+            } else {
+                $mailPayload = [
+                    'message' => [
+                        'subject' => $subject,
+                        'body' => [
+                            'contentType' => 'HTML',
+                            'content' => $body,
+                        ],
+                        'from' => [
+                            'emailAddress' => ['address' => $serviceAccount],
+                        ],
+                        'toRecipients' => [
+                            ['emailAddress' => ['address' => $toAddress]],
+                        ],
+                        'ccRecipients' => array_map(
+                            static fn (string $address): array => ['emailAddress' => ['address' => $address]],
+                            $ccAddresses
+                        ),
+                        'replyTo' => [
+                            ['emailAddress' => [
+                                'address' => $email,
+                                'name' => $name,
+                            ]],
+                        ],
+                    ],
+                    'saveToSentItems' => true,
+                ];
 
-        $result = self::postJson(
-            "https://graph.microsoft.com/v1.0/users/{$serviceAccount}/sendMail",
-            $mailPayload,
-            ["Authorization: Bearer {$token}", 'Content-Type: application/json']
-        );
-
-        if ($result['status'] >= 200 && $result['status'] < 300) {
-            $prospectEmailSent = null;
-            if ($isAssessment) {
-                $confirmationPayload = self::buildProspectConfirmationMail($serviceAccount, $email, $name, $safe);
-                $confirmationResult = self::postJson(
+                $result = self::postJson(
                     "https://graph.microsoft.com/v1.0/users/{$serviceAccount}/sendMail",
-                    $confirmationPayload,
+                    $mailPayload,
                     ["Authorization: Bearer {$token}", 'Content-Type: application/json']
                 );
-                $prospectEmailSent = $confirmationResult['status'] >= 200 && $confirmationResult['status'] < 300;
-            }
 
+                if ($result['status'] >= 200 && $result['status'] < 300) {
+                    $emailSent = true;
+                    if ($isAssessment) {
+                        $confirmationPayload = $isMarketingHealth && is_array($healthScore)
+                            ? self::buildMarketingHealthResultsMail($serviceAccount, $email, $name, $healthScore, $safe)
+                            : self::buildProspectConfirmationMail($serviceAccount, $email, $name, $safe);
+                        $confirmationResult = self::postJson(
+                            "https://graph.microsoft.com/v1.0/users/{$serviceAccount}/sendMail",
+                            $confirmationPayload,
+                            ["Authorization: Bearer {$token}", 'Content-Type: application/json']
+                        );
+                        $prospectEmailSent = $confirmationResult['status'] >= 200 && $confirmationResult['status'] < 300;
+                    }
+
+                } else {
+                    $mailError = 'MAIL_SEND_FAILED';
+                    error_log(sprintf(
+                        '[mail] Graph sendMail failed (HTTP %d) from %s: %s',
+                        $result['status'],
+                        $serviceAccount,
+                        substr((string)$result['body'], 0, 400)
+                    ));
+                }
+            }
+        } else {
+            $mailError = 'MAIL_CONFIG_MISSING';
+        }
+
+        // The CRM lead is created whether or not the emails went out, so a mail
+        // outage never loses a Health Check lead.
+        if ($isMarketingHealth && is_array($healthScore)) {
+            $zohoResult = ZohoCrm::upsertMarketingHealthLead($config, $payload, $healthScore);
+        }
+
+        if ($isMarketingHealth && is_array($healthScore)) {
             Response::json([
-                'email_sent' => true,
+                'email_sent' => $emailSent,
                 'prospect_email_sent' => $prospectEmailSent,
+                'zoho' => $zohoResult,
+                'mail_error' => $mailError,
+                'health_check' => $healthScore,
             ]);
             return;
         }
 
-        Response::error('MAIL_SEND_FAILED', 'Unable to send the contact email.', 502);
+        if ($emailSent) {
+            Response::json([
+                'email_sent' => true,
+                'prospect_email_sent' => $prospectEmailSent,
+                'zoho' => $zohoResult,
+            ]);
+            return;
+        }
+
+        Response::error($mailError ?: 'MAIL_SEND_FAILED', 'Unable to send the contact email.', $mailError === 'MAIL_CONFIG_MISSING' ? 500 : 502);
     }
 
     private static function mailRecipients(string $addresses): array
@@ -176,14 +256,20 @@ final class ContactController
         $band = trim((string)($snapshot['band'] ?? 'Operational opportunity identified.'));
         $level = trim((string)($snapshot['level'] ?? 'Opportunity'));
         $headlineCompany = $company !== '' ? $company : ((string)($profile['businessName'] ?? '') ?: 'Company not provided');
-        $summaryRows = self::renderStripedRows([
+        $challenge = trim((string)($payload['challenge'] ?? ''));
+        $leadSourceTag = trim((string)($payload['leadSourceTag'] ?? ''));
+        $isMarketingHealth = MarketingHealthCheck::isHealthCheck($payload);
+        $summaryRows = self::renderStripedRows(array_values(array_filter([
             ['Lead ID', $leadId],
             ['Region', $regionLabel],
             ['Status', 'New Opportunity'],
             ['Source', $source],
+            $leadSourceTag !== '' ? ['Lead tag', $leadSourceTag] : null,
             ['Maturity band', trim($level . ' — ' . $band)],
             ['Stated objective', $businessObjective],
-        ], $safe);
+            $challenge !== '' ? ['Marketing challenge', $challenge] : null,
+            $isMarketingHealth ? ['Assessment type', 'Digital Marketing Health Check'] : null,
+        ])), $safe);
         $respondentRows = self::renderStripedRows([
             ['Name', $name],
             ['Email', $email],
@@ -553,6 +639,14 @@ final class ContactController
             return (int)($a['score'] ?? 100) <=> (int)($b['score'] ?? 100);
         });
 
+        $marketingTips = [
+            'strategy' => 'Agree clear goals, an audience focus and a simple monthly marketing plan.',
+            'visibility' => 'Improve discoverability with consistent channel presence and clearer targeting.',
+            'leads' => 'Tighten lead capture, response times and CRM follow-up.',
+            'content' => 'Create customer-focused content with clear calls to action.',
+            'measurement' => 'Track leads and conversions monthly, then optimise from the numbers.',
+        ];
+
         $templates = [
             'ai' => "Walk through practical AI use cases based on the current '{answer}' status.",
             'data' => "Show reporting and dashboard options because decision visibility is currently '{answer}'.",
@@ -566,13 +660,84 @@ final class ContactController
         $selectedDimensions = array_slice($dimensionScores, 0, 2);
         foreach ($selectedDimensions as $index => $dimension) {
             $id = (string)($dimension['id'] ?? '');
+            $label = (string)($dimension['label'] ?? $id);
+            $tip = trim((string)($dimension['tip'] ?? ''));
             $answer = (string)($dimension['answer'] ?? 'not clearly defined');
-            $template = $templates[$id] ?? "Review {$id} because it appears in the lowest-scoring dimensions.";
+            if ($tip !== '') {
+                $point = "{$label}: {$tip}";
+            } elseif (isset($marketingTips[$id])) {
+                $point = "{$label}: {$marketingTips[$id]}";
+            } else {
+                $template = $templates[$id] ?? "Review {$label} because it appears in the lowest-scoring dimensions.";
+                $point = str_replace('{answer}', $answer, $template);
+            }
             $margin = $index === count($selectedDimensions) - 1 ? '0' : '0 0 4px';
-            $items .= "<p style='margin:{$margin}; font-family:\"Segoe UI\", Arial, Helvetica, sans-serif; font-size:14px; color:#4B5563; line-height:1.45;'>— " . $safe(str_replace('{answer}', $answer, $template)) . '</p>';
+            $items .= "<p style='margin:{$margin}; font-family:\"Segoe UI\", Arial, Helvetica, sans-serif; font-size:14px; color:#4B5563; line-height:1.45;'>— " . $safe($point) . '</p>';
         }
 
         return $items;
+    }
+
+    private static function buildMarketingHealthResultsMail(
+        string $serviceAccount,
+        string $email,
+        string $name,
+        array $scored,
+        callable $safe
+    ): array {
+        $firstName = trim(explode(' ', trim($name))[0] ?? '');
+        $greeting = $firstName !== '' ? "Hi {$safe($firstName)}," : 'Hi,';
+        $score = (string)($scored['overallScore'] ?? 'N/A');
+        $category = $safe((string)($scored['category'] ?? ''));
+        $message = $safe((string)($scored['categoryMessage'] ?? ''));
+
+        $pillarHtml = '';
+        foreach ($scored['pillarScores'] as $pillar) {
+            if (!is_array($pillar)) {
+                continue;
+            }
+            $pillarHtml .= '<li><strong>' . $safe((string)($pillar['label'] ?? 'Pillar')) . ':</strong> '
+                . $safe((string)($pillar['score'] ?? '0')) . '/100</li>';
+        }
+
+        $weakestHtml = '';
+        foreach ($scored['weakest'] as $pillar) {
+            if (!is_array($pillar)) {
+                continue;
+            }
+            $weakestHtml .= '<li><strong>' . $safe((string)($pillar['label'] ?? 'Area')) . ':</strong> '
+                . $safe((string)($pillar['tip'] ?? '')) . '</li>';
+        }
+
+        $body = "
+            <p>{$greeting}</p>
+            <p>Thank you for completing OmniContact’s Digital Marketing Health Check.</p>
+            <p><strong>Your Marketing Health Score: {$safe($score)}/100</strong> — {$category}</p>
+            <p>{$message}</p>
+            <p><strong>Pillar scores</strong></p>
+            <ul>{$pillarHtml}</ul>
+            <p><strong>Focus on these areas first</strong></p>
+            <ul>{$weakestHtml}</ul>
+            <p>Ready to turn these gaps into a practical growth plan? Reply to this email or book a free marketing consultation with our MaaS team.</p>
+            <p>Kind regards,<br>OmniContact Marketing Team</p>
+        ";
+
+        return [
+            'message' => [
+                'subject' => "Your Digital Marketing Health Score: {$score}/100",
+                'body' => [
+                    'contentType' => 'HTML',
+                    'content' => $body,
+                ],
+                'from' => [
+                    'emailAddress' => ['address' => $serviceAccount],
+                ],
+                'toRecipients' => [
+                    ['emailAddress' => ['address' => $email]],
+                ],
+            ],
+            'saveToSentItems' => true,
+        ];
     }
 
     private static function buildProspectConfirmationMail(string $serviceAccount, string $email, string $name, callable $safe): array
@@ -625,7 +790,15 @@ final class ContactController
         curl_close($ch);
 
         $data = json_decode((string)$response, true);
-        return is_array($data) ? ($data['access_token'] ?? null) : null;
+        $token = is_array($data) ? ($data['access_token'] ?? null) : null;
+        if (!$token) {
+            // Microsoft's error code/description only (no secrets), e.g.
+            // invalid_client / AADSTS7000215 = wrong or expired client secret.
+            error_log('[mail] Graph token failed: ' . (is_array($data)
+                ? trim(($data['error'] ?? '') . ' ' . substr((string)($data['error_description'] ?? ''), 0, 300))
+                : 'no response'));
+        }
+        return $token;
     }
 
     private static function postJson(string $url, array $payload, array $headers): array

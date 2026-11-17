@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CmsShell from './CmsShell'
+import CmsPendingAuth from './CmsPendingAuth'
 import { createUser, deleteUser, fetchCurrentAdmin, fetchUsers, updateUser } from '../services/cmsApi'
 
 const emptyForm = {
@@ -148,13 +149,7 @@ export default function CmsUsersManager() {
   }
 
   if (loading) {
-    return (
-      <CmsShell title="Users" subtitle="Loading users...">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-sm font-bold text-slate-600 shadow-sm">
-          Loading users...
-        </div>
-      </CmsShell>
-    )
+    return <CmsPendingAuth label="Loading users…" />
   }
 
   return (

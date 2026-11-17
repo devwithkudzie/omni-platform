@@ -20,6 +20,20 @@ spl_autoload_register(static function (string $class): void {
 use OmniContact\Http\Cors;
 use OmniContact\Http\Response;
 
+// Zoho CRM and mail keys written by the deploy zip (scripts/build-cpanel-public-html.mjs).
+// They're env values, which config/app.php reads before the cms constants.
+$serverConfig = dirname(__DIR__) . '/config/server.local.php';
+if (is_file($serverConfig)) {
+    require_once $serverConfig;
+}
+
+// Bridge credentials from the legacy CMS bootstrap (DB, mail) when it's present
+// alongside this router, so both systems share one source of truth for secrets.
+$legacyConfig = dirname(__DIR__) . '/cms/config.php';
+if (is_file($legacyConfig)) {
+    require_once $legacyConfig;
+}
+
 $config = require dirname(__DIR__) . '/config/app.php';
 Cors::apply($config['allowed_origins']);
 

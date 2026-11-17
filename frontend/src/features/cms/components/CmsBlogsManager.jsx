@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CmsShell from './CmsShell'
+import CmsPendingAuth from './CmsPendingAuth'
 import { approveBlog, deleteAdminBlog, fetchAdminBlogs, fetchCurrentAdmin } from '../services/cmsApi'
 
 const statusFilters = ['all', 'draft', 'published', 'archived']
@@ -106,13 +107,7 @@ export default function CmsBlogsManager() {
   }
 
   if (loading) {
-    return (
-      <CmsShell title="Insights" subtitle="Loading CMS posts...">
-        <div className="border border-slate-200 bg-white p-8 text-sm font-bold text-slate-600 shadow-sm">
-          Loading posts...
-        </div>
-      </CmsShell>
-    )
+    return <CmsPendingAuth label="Loading posts…" />
   }
 
   return (

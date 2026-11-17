@@ -119,14 +119,16 @@ return [
             ]);
         },
     ],
+    // The cPanel .htaccess only forwards /api/v1/* to PHP, so forms post to
+    // the v1 paths; the unversioned ones stay for local dev and old builds.
     [
         'method' => 'POST',
-        'pattern' => '#^/api/contact$#',
+        'pattern' => '#^/api(?:/v1)?/contact$#',
         'handler' => [ContactController::class, 'submit'],
     ],
     [
         'method' => 'POST',
-        'pattern' => '#^/api/assessment$#',
+        'pattern' => '#^/api(?:/v1)?/assessment$#',
         'handler' => [ContactController::class, 'submit'],
     ],
 ];

@@ -50,7 +50,7 @@ export default function AboutPage({ page, slug = 'about' }) {
         title={page.title}
       />
 
-      <section className="solution-anchor solution-group solution-group--navy" id="overview">
+      <section className="solution-anchor sx-band sx-band--soft" id="overview">
         <div className="site-container">
           <SolutionOverview
             body={page.intro.body}
@@ -68,7 +68,7 @@ export default function AboutPage({ page, slug = 'about' }) {
 
       {slug === 'who-we-are' ? <SiteTourCallout /> : null}
 
-      <section className="solution-anchor solution-group solution-group--dark" id="detail">
+      <section className="solution-anchor sx-band" id="detail">
         <div className="site-container">
           <SolutionOutcomes
             eyebrow="In practice"

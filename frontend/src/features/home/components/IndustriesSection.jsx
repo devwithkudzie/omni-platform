@@ -5,13 +5,66 @@ import Link from 'next/link'
 import { industryIcons } from '@/features/industries/data/industryIcons'
 
 const industries = [
-  { title: 'Financial Services', href: '/industries/financial-services', slug: 'financial-services', icon: '▥', text: 'Secure support models for regulated customer operations.' },
-  { title: 'Insurance', href: '/industries/insurance', slug: 'insurance', icon: '◇', text: 'Policyholder journeys supported across service, claims, and retention.' },
-  { title: 'Health', href: '/industries/health', slug: 'health', icon: '⌁', text: 'Responsive patient and member engagement for care teams.' },
-  { title: 'Technology', href: '/industries/technology', slug: 'technology', icon: '▣', text: 'Digital-first assistance for products, platforms, and users.' },
-  { title: 'Travel & Hospitality', href: '/industries/travel-hospitality', slug: 'travel-hospitality', icon: '↗', text: 'Guest and traveller support built for peaks, changes, and recovery.' },
-  { title: 'Retail & E-commerce', href: '/industries/retail-ecommerce', slug: 'retail-ecommerce', icon: '▤', text: 'Omnichannel help for orders, fulfilment, returns, and loyalty.' },
-  { title: 'Education', href: '/industries/education', slug: 'education', icon: '□', text: 'Learner, candidate, and institution support with reliable reporting.' },
+  {
+    title: 'Financial Services',
+    href: '/industries/financial-services',
+    slug: 'financial-services',
+    icon: '▥',
+    text: 'Secure support models for regulated customer operations.',
+    image: '/home/visuals/financial-services.png',
+  },
+  {
+    title: 'Insurance',
+    href: '/industries/insurance',
+    slug: 'insurance',
+    icon: '◇',
+    text: 'Policyholder journeys supported across service, claims, and retention.',
+  },
+  {
+    title: 'Health',
+    href: '/industries/health',
+    slug: 'health',
+    icon: '⌁',
+    text: 'Responsive patient and member engagement for care teams.',
+    image: '/home/visuals/healthcare.png',
+  },
+  {
+    title: 'Technology',
+    href: '/industries/technology',
+    slug: 'technology',
+    icon: '▣',
+    text: 'Digital-first assistance for products, platforms, and users.',
+  },
+  {
+    title: 'Travel & Hospitality',
+    href: '/industries/travel-hospitality',
+    slug: 'travel-hospitality',
+    icon: '↗',
+    text: 'Guest and traveller support built for peaks, changes, and recovery.',
+  },
+  {
+    title: 'Retail & E-commerce',
+    href: '/industries/retail-ecommerce',
+    slug: 'retail-ecommerce',
+    icon: '▤',
+    text: 'Omnichannel help for orders, fulfilment, returns, and loyalty.',
+  },
+  {
+    title: 'Education',
+    href: '/industries/education',
+    slug: 'education',
+    icon: '□',
+    text: 'Learner, candidate, and institution support with reliable reporting.',
+    image: '/home/visuals/education.png',
+  },
+  {
+    title: 'Government & Public Sector',
+    href: '/solutions/business-process-outsourcing',
+    slug: 'government',
+    icon: '▣',
+    text: 'Citizen services, administration support, and secure public operations.',
+    image: '/home/visuals/government.png',
+  },
 ]
 
 function SectionEyebrow({ children }) {
@@ -60,12 +113,15 @@ export default function IndustriesSection() {
         <div className="reference-industries" aria-label="Industries" ref={listRef}>
           {industries.map((industry, index) => (
             <Link
-              className="reference-industry-card"
+              className={`reference-industry-card${industry.image ? ' reference-industry-card--photo' : ''}`}
               data-reveal
               href={industry.href}
               key={industry.title}
               style={{ '--how-delay': `${index * 90}ms` }}
             >
+              {industry.image ? (
+                <img className="reference-industry-card__photo" src={industry.image} alt="" />
+              ) : null}
               <span className="reference-industry-card__icon" aria-hidden="true">
                 {industryIcons[industry.slug] ? (
                   <img src={industryIcons[industry.slug]} alt="" />
@@ -75,7 +131,9 @@ export default function IndustriesSection() {
               </span>
               <h3>{industry.title}</h3>
               <p>{industry.text}</p>
-              <strong>See solutions <span aria-hidden="true">→</span></strong>
+              <strong>
+                See solutions <span aria-hidden="true">→</span>
+              </strong>
             </Link>
           ))}
         </div>

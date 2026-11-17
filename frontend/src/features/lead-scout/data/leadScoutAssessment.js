@@ -311,7 +311,7 @@ export const solutionFamilies = [
       'QA Toolbox',
       'Asset Management System',
       'Recruitment Management System',
-      'School Management & Administration Platform',
+      'ARAMS (School Management)',
     ],
     problems: [
       'We need better QA visibility',
