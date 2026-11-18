@@ -14,7 +14,10 @@ const backendIncludeFolders = ['public', 'routes', 'src', 'config', 'api']
 const jwtSecret = process.env.JWT_SECRET || ''
 const tempRoot = path.join(os.tmpdir(), `omnicontact-cpanel-${Date.now()}`)
 const excludeRoot = path.join(tempRoot, 'excluded-routes')
-const stageRoot = path.join(tempRoot, 'stage')
+// DEPLOY_STAGE_DIR (used by GitHub Actions) leaves the built public_html in that
+// folder for scripts/deploy-cpanel.mjs instead of zipping it.
+const stageDir = process.env.DEPLOY_STAGE_DIR ? path.resolve(process.env.DEPLOY_STAGE_DIR) : ''
+const stageRoot = stageDir || path.join(tempRoot, 'stage')
 const publicHtml = path.join(stageRoot, 'public_html')
 const dateStamp = new Date().toISOString().slice(0, 10)
 const zipName = process.env.DEPLOY_ZIP || `omnicontact-public_html-cpanel-${dateStamp}.zip`
@@ -132,26 +135,37 @@ const serverKeys = [
 ]
 const requiredServerKeys = ['ZOHO_CLIENT_ID', 'ZOHO_CLIENT_SECRET', 'ZOHO_REFRESH_TOKEN', 'TENANT_ID', 'CLIENT_ID', 'CLIENT_SECRET', 'SERVICE_ACCOUNT']
 
-async function writeServerConfig() {
+// Values are PHP single-quoted literal contents (as written in config.local.php).
+async function readServerKeys() {
   const source = path.join(backendRoot, 'cms', 'config.local.php')
-  if (!existsSync(source)) {
-    throw new Error('backend/cms/config.local.php not found; refusing to build a zip without Zoho and mail keys.')
-  }
-
-  const text = await readFile(source, 'utf8')
   const values = new Map()
-  // Matches define('KEY', 'value') and define('KEY', getenv('KEY') ?: 'value');
-  // the value is the last single-quoted literal on the line.
-  for (const line of text.split('\n')) {
-    const match = line.match(/^\s*define\(\s*'([A-Z0-9_]+)'.*'((?:[^'\\]|\\.)*)'\s*\)\s*;/)
-    if (match && serverKeys.includes(match[1]) && match[2] !== '') {
-      values.set(match[1], match[2])
+
+  if (existsSync(source)) {
+    const text = await readFile(source, 'utf8')
+    // Matches define('KEY', 'value') and define('KEY', getenv('KEY') ?: 'value');
+    // the value is the last single-quoted literal on the line.
+    for (const line of text.split('\n')) {
+      const match = line.match(/^\s*define\(\s*'([A-Z0-9_]+)'.*'((?:[^'\\]|\\.)*)'\s*\)\s*;/)
+      if (match && serverKeys.includes(match[1]) && match[2] !== '') {
+        values.set(match[1], match[2])
+      }
     }
+    return { values, from: 'backend/cms/config.local.php' }
   }
 
+  // No local config (e.g. GitHub Actions): read the keys from environment variables.
+  for (const name of serverKeys) {
+    const value = (process.env[name] || '').trim()
+    if (value !== '') values.set(name, value.replace(/\\/g, '\\\\').replace(/'/g, "\\'"))
+  }
+  return { values, from: 'environment variables' }
+}
+
+async function writeServerConfig() {
+  const { values, from } = await readServerKeys()
   const missing = requiredServerKeys.filter((name) => !values.has(name))
   if (missing.length) {
-    throw new Error(`cms/config.local.php is missing ${missing.join(', ')}; refusing to build the zip.`)
+    throw new Error(`Missing ${missing.join(', ')} in ${from}; refusing to build without Zoho and mail keys.`)
   }
 
   // Some cPanel hosts disable putenv(); fall back to guarded constants there.
@@ -186,6 +200,7 @@ async function packageExport() {
   await cp(frontendOut, publicHtml, { recursive: true })
   await copyBackend()
   run('find', [publicHtml, '-name', '.DS_Store', '-delete'])
+  if (stageDir) return
   await rm(zipPath, { force: true })
   run('zip', ['-qr', zipPath, 'public_html'], { cwd: stageRoot })
 }
@@ -203,4 +218,4 @@ try {
 await packageExport()
 await rm(tempRoot, { recursive: true, force: true })
 
-console.log(`Created ${path.relative(root, zipPath)}`)
+console.log(stageDir ? `Staged ${path.relative(root, publicHtml) || publicHtml}` : `Created ${path.relative(root, zipPath)}`)

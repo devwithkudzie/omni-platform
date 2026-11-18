@@ -1,0 +1,77 @@
+name: Deploy to cPanel
+
+# Pushes to main deploy to staging. Live (omnicontact.biz) is only deployed by
+# hand: Actions → "Deploy to cPanel" → Run workflow → target: production.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy
+        type: choice
+        options: [staging, production]
+        default: staging
+      full:
+        description: Send every file (ignore what is already on the server)
+        type: boolean
+        default: false
+
+# One deploy per target at a time. A newer deploy waits for the running one,
+# and queued deploys collapse into the newest, so rapid publishes batch up.
+concurrency:
+  group: deploy-${{ inputs.target || 'staging' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TARGET: ${{ inputs.target || 'staging' }}
+    steps:
+      - name: Only main can go live
+        if: env.TARGET == 'production' && github.ref != 'refs/heads/main'
+        run: |
+          echo "Production deploys must run from main (this is ${GITHUB_REF})."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: node scripts/build-cpanel-public-html.mjs
+        env:
+          DEPLOY_STAGE_DIR: ${{ runner.temp }}/stage
+          ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ACCOUNTS_URL: ${{ secrets.ZOHO_ACCOUNTS_URL }}
+          ZOHO_API_DOMAIN: ${{ secrets.ZOHO_API_DOMAIN }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: Deploy to ${{ env.TARGET }}
+        run: node scripts/deploy-cpanel.mjs
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_TOKEN: ${{ secrets.CPANEL_TOKEN }}
+          CPANEL_HOME: /datadrive/omnicontact
+          DEPLOY_SOURCE: ${{ runner.temp }}/stage/public_html
+          DEPLOY_PATH: ${{ env.TARGET == 'production' && 'public_html' || 'public_html/staging.omnicontact.biz' }}
+          DEPLOY_FULL: ${{ inputs.full || false }}
+          DEPLOY_LABEL: ${{ github.sha }}
+          HEALTH_URL: ${{ env.TARGET == 'production' && 'https://omnicontact.biz/api/v1/health' || 'https://staging.omnicontact.biz/api/v1/health' }}
